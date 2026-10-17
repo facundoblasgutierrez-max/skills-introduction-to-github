@@ -213,3 +213,28 @@ Argentina»).
   4. Patagonia;
   5. madre e hija;
   6. 2×1.
+
+## 11 · Listo para publicar (17-10, 19:40 UTC)
+
+**Hecho en el producto, ya vivo:**
+- Precio $33.900, con tachado $52.884.
+- Título «Patagonia Rescue Balm · Bálsamo anti-age sin agua para piel madura · VegaPlay».
+- SEO nuevo.
+- INCI corregido en el metafield.
+- Galería nueva: caléndulas, el packshot real, la mujer de 58, el antes/después, la textura y el
+  2×1.
+
+**Descuentos activos desde las 19:30 UTC.**
+- Verificados con draftOrderCalculate: 1 = $33.900, 2 = $52.884, 3 = $76.275.
+- El 2×1 se acumulaba con «15% OFF en la 2da unidad», que es de toda la tienda, y daba $48.918.
+  Se corrigió: el BxGy ya no combina con descuentos de pedido ni de producto. La sesión de C10
+  quedó avisada, porque su crema tiene la misma configuración.
+- No se pudo probar el carrito real desde el sandbox: la tienda devuelve 429, «Verifying your
+  connection».
+
+**Landing.** Sección «Vs. las cremas de farmacia» con la imagen `vp-rb-lp-agua.jpg`.
+
+**Anuncios.** 16 estáticos subidos a la biblioteca de La Beautyneta (ver `ANUNCIOS.md`). La
+campaña falta armarla: se arma cuando Facu diga el presupuesto diario.
+
+**Lo único que falta de Facu:** publicar el tema 188277588219.
