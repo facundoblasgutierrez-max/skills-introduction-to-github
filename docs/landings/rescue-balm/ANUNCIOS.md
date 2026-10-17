@@ -74,7 +74,8 @@ Sigue la forma de las campañas que ya funcionan en la cuenta.
 ## Campaña creada (17-10-2026, pedido de Facu)
 
 - **Campaña:** «🧪 CBO | RESCUE BALM VEGAPLAY · PIEL MADURA | 17-10-2026» (`120251296294740443`).
-  Cuenta La Beautyneta. CBO, $35.000 por día, Ventas. **Queda en PAUSA:** la activa Facu.
+  Cuenta La Beautyneta. CBO, $35.000 por día, Ventas. **Activa desde el 17-10** (Facu la prendió;
+  hubo que destrabarla, ver abajo).
 - **Conjuntos.** Los dos están activos, con gasto mínimo de $5.000 por día y el píxel
   1170516519765683 (Compra):
   - `120251296298560443`: «ÁNGULO 1 · COMPARATIVO: AGUA VS ACTIVOS + VEGANO».
@@ -90,3 +91,13 @@ Sigue la forma de las campañas que ya funcionan en la cuenta.
   - Advantage+ Creative apagado y todas las mejoras automáticas en OPT_OUT: retoques,
     brillo, texto, CTA, plantillas, recorte, animación, comentarios y extensiones.
 - **Sin cargar:** la declaración de IA (self_ai_disclosure) la decide el anunciante.
+
+## Destrabe al activar (17-10-2026)
+
+- Ads Manager rechazaba la publicación con el error #1870194 (la opción de ubicación «viven, viajan o
+  estuvieron» ya no existe). Se dejó la ubicación en `home`. Meta igual guarda `frequently_in` y
+  `home`, que es lo mismo que tiene el TEST OJERAS activo.
+- Al reactivar el conjunto 2, la API devolvía «el gasto mínimo combinado supera el presupuesto», con
+  $5.000 + $5.000 contra $35.000. Es un falso positivo de Meta. Se destrabó así: se sacó el mínimo del
+  conjunto 1, se activó el 2 y se volvió a poner el mínimo de $5.000 en el 1.
+- Campaña, 2 conjuntos y 10 anuncios en ACTIVE; `ads_get_errors` vacío.
