@@ -70,3 +70,23 @@ Sigue la forma de las campañas que ya funcionan en la cuenta.
   usa.
 - **Comparativos con Tala (02 y 15):** el pote está pixelado, no se nombra a Tala y lo que se
   afirma (cera de abejas y colágeno) está en la propia web de Tala.
+
+## Campaña creada (17-10-2026, pedido de Facu)
+
+- **Campaña:** «🧪 CBO | RESCUE BALM VEGAPLAY · PIEL MADURA | 17-10-2026» (`120251296294740443`).
+  Cuenta La Beautyneta. CBO, $35.000 por día, Ventas. **Queda en PAUSA:** la activa Facu.
+- **Conjuntos.** Los dos están activos, con gasto mínimo de $5.000 por día y el píxel
+  1170516519765683 (Compra):
+  - `120251296298560443`: «ÁNGULO 1 · COMPARATIVO: AGUA VS ACTIVOS + VEGANO».
+    Anuncios RB-11, RB-03, RB-02, RB-15 y RB-16.
+  - `120251296300270443`: «ÁNGULO 2 · PIEL MADURA: SEQUEDAD + ANTES/DESPUÉS + OFERTA».
+    Anuncios RB-01, RB-09, RB-14, RB-12 y RB-07.
+- **Público:** Argentina, mujeres, edad sugerida 40–65 con Advantage+ (el mínimo duro es 25).
+  Excluye a los compradores de 180 días.
+- **Ubicaciones:** Facebook, Instagram, Messenger y Threads. Audience Network queda afuera.
+- **Anuncios:** 10, en revisión de Meta.
+  - Página Vegaplay, Instagram @vegaplay.ok.
+  - Botón Comprar, con link a la ficha del bálsamo.
+  - Advantage+ Creative apagado y todas las mejoras automáticas en OPT_OUT: retoques,
+    brillo, texto, CTA, plantillas, recorte, animación, comentarios y extensiones.
+- **Sin cargar:** la declaración de IA (self_ai_disclosure) la decide el anunciante.
