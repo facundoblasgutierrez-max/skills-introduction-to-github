@@ -75,29 +75,30 @@ la sequedad y una sola rutina simple.
 4. **Origen Patagonia (aspiracional):** «Lo que resiste en la Patagonia, resiste en tu piel.»
 5. **Clima:** «Viento, frío y calefacción.» Funciona en temporada fría y en el sur.
 
-## 4 · Oferta (3 opciones)
+## 4 · Oferta (3 opciones) — definida por Facu el 17-10
 
-Propuesta. Falta el OK de Facu para cambiar el precio en Shopify.
+| Opción | Precio | Tachado |
+|---|---|---|
+| 1 bálsamo · Para probar | **$33.900** | **$52.884** |
+| **2×1** · 2 bálsamos · Uno en casa, uno en la cartera (la más elegida) | **$52.884**, el tachado de uno | $105.768 |
+| 3 bálsamos · 25% OFF, para regalar | **$76.275** | $158.652 |
 
-| Opción | Precio | Tachado | Por unidad |
-|---|---|---|---|
-| 1 bálsamo · Para probar | **$33.900** | $52.900 | $33.900 |
-| 2 bálsamos · Uno en casa, uno en la cartera (la más elegida) | **$52.884** | $105.800 | $26.442 |
-| 3 bálsamos · 25% OFF, para regalar | **$76.275** | $158.700 | $25.425 |
+2×1 = te llevás 2 y pagás el precio de lista (tachado) de uno.
 
-Descuentos ya creados en Shopify, **programados para el 01-01-2027**, así no corren antes de
-publicar:
+Descuentos en Shopify, **programados para el 01-01-2027** (todavía no corren):
 
-- `gid://shopify/DiscountAutomaticNode/1846562259195`: «2do al 44% OFF — 2 Rescue Balm»
-  (BxGy, combina con descuentos de pedido y envío, igual que el de la crema).
-- `gid://shopify/DiscountAutomaticNode/1846562291963`: «25% OFF llevando 3 — Rescue Balm»
-  (básico, mínimo 3, combina con descuentos de producto y envío).
+- `gid://shopify/DiscountAutomaticNode/1846562259195`: «2×1 — 2 por $52.884 — Patagonia Rescue
+  Balm VegaPlay (C11)». BxGy: el 2.º bálsamo al 44% OFF. A $33.900 da $52.884 exacto.
+  Combina con descuentos de pedido y envío, igual que el de la crema.
+- `gid://shopify/DiscountAutomaticNode/1846562291963`: «25% OFF llevando 3 — Rescue Balm».
+  Básico, mínimo 3, combina con descuentos de producto y envío.
 
-El 44% hace que el precio de 2 salga solo, cualquiera sea el precio de 1. La landing y el
-selector calculan con `precio × 0,44`. A $33.900 da $52.884 exacto.
+La landing y el selector calculan con `precio × 0,44`. El selector muestra «🔥 2×1 · Uno en
+casa, uno en la cartera».
 
-**Al publicar:** precio $33.900 y tachado $52.900, y pasar `startsAt` de los dos descuentos a
-«ahora».
+**Al publicar el tema:**
+1. Precio $33.900 y tachado $52.884.
+2. Pasar el `startsAt` de los dos descuentos a «ahora».
 
 ## 5 · Landing (copia del tema `188277588219`, la misma de la crema)
 
@@ -158,7 +159,6 @@ reemplazan a las de la marca.
 ## 8 · Pendientes
 
 - **Facu:**
-  - OK al precio ($33.900 / 2 por $52.884 / 3 al 25%);
   - fabricar: hay 12 unidades, no alcanza para pautar;
   - publicar el tema «VegaPlay Crema Corporal — landing (17 oct)», que lleva las dos landings.
 - **Scaloni, cuando Facu publique:**
