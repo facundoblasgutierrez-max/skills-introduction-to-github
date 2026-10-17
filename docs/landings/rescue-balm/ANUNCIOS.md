@@ -101,3 +101,22 @@ Sigue la forma de las campañas que ya funcionan en la cuenta.
   $5.000 + $5.000 contra $35.000. Es un falso positivo de Meta. Se destrabó así: se sacó el mínimo del
   conjunto 1, se activó el 2 y se volvió a poner el mínimo de $5.000 en el 1.
 - Campaña, 2 conjuntos y 10 anuncios en ACTIVE; `ads_get_errors` vacío.
+
+## Reels ganadores sumados (17-10-2026, pedido de Facu)
+
+Son los dos videos del bálsamo que más vendieron en «⚗️ ABO | TESTEO | 21-07-2026» (histórico):
+
+| Reel | Video | Gasto | Compras | Costo por compra | ROAS |
+|---|---|---|---|---|---|
+| 1 · pote en la Patagonia | 1540313181122340 | $203.435 | 6 | $33.906 | 3,04 |
+| 2 · antes/después UGC | 1787740382641070 | $102.211 | 3 | $34.070 | 2,65 |
+
+- **Copy:** se usó el del original, «Esto no es filtro…», con la oferta de hoy (2×1, garantía de 30 días).
+  Se sacó «rosa mosqueta», que no está en el INCI actual, y se sacó «Llevando 3, envío gratis».
+- **Creativos:** `2170665557133626` (reel 1) y `3591341647714810` (reel 2).
+  - Página Vegaplay, IG @vegaplay.ok, botón Comprar, link a la ficha del bálsamo.
+  - Advantage+ Creative apagado y mejoras en OPT_OUT.
+  - Portada: un cuadro del propio video, guardado en Shopify Files como `rb-reel-ganador-*`.
+- **Anuncios, en ACTIVE y sin errores:**
+  - Conjunto 1: `120251296552780443` (reel 1) y `120251296553010443` (reel 2).
+  - Conjunto 2: `120251296553110443` (reel 1) y `120251296553200443` (reel 2).
