@@ -1,4 +1,4 @@
-{%- comment -%} VP-RB · arriba del título (17-10-2026, C11). Marca + origen + valoración real de VegaPlay (Judge.me) + colores VegaPlay para el selector, sólo en esta plantilla. {%- endcomment -%}
+{%- comment -%} VP-RB · arriba del título (17-10-2026, C11). Marca + origen + valoración real de VegaPlay (Judge.me). Además, sólo en esta plantilla: tipografía VegaPlay (el tema fuerza su serif en h1-h5 e Inter en el texto con !important), selector de packs y barra fija en la paleta VegaPlay. Mismas reglas que vp-cc-intro (C10). {%- endcomment -%}
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <div class="vprb-intro">
   <p class="vprb-intro__brand"><svg viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>VegaPlay · Patagonia argentina</p>
@@ -13,8 +13,15 @@
   .vprb-intro__rate span:last-child{text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c3b3}
   body:has(.vprb-intro) .product__title h1,body:has(.vprb-intro) .product__title h2{font-family:'Lora',Georgia,serif !important;font-weight:500 !important;color:#1d3c34;letter-spacing:-.01em;line-height:1.08}
   body:has(.vprb-intro) .lbn-bundle__opt.is-active{background:#e5ede8 !important;border-color:#1d3c34 !important;box-shadow:4px 4px 0 rgba(29,60,52,.14) !important}
-  body:has(.vprb-intro) .lbn-bundle__badge,body:has(.vprb-intro) .lbn-bundle__badge--soft,body:has(.vprb-intro) .lbn-bundle__cqs{background:#1d3c34 !important;border-color:#1d3c34 !important}
+  body:has(.vprb-intro) .lbn-bundle__badge,body:has(.vprb-intro) .lbn-bundle__badge--soft,body:has(.vprb-intro) .lbn-bundle__cqs{background:#1d3c34 !important;border-color:#1d3c34 !important;color:#f3f1ea !important}
   body:has(.vprb-intro) .lbn-bundle__save,body:has(.vprb-intro) .lbn-bundle__pct{background:#f1e6dc !important;color:#8a5a37 !important}
+  body:has(.vprb-intro) .lbn-bundle__name{font-family:'Lora',Georgia,serif !important;font-weight:500 !important;color:#1d3c34}
   body:has(.vprb-intro) .product-form__submit{background:#1d3c34 !important;color:#f3f1ea !important;border-color:#1d3c34 !important}
+  body:has(.vprb-intro) #lbn-sticky{background:#16302a !important}
+  body:has(.vprb-intro) #lbn-sticky button{background:#f3f1ea !important;color:#1d3c34 !important;border-color:#f3f1ea !important}
+  .vprb h2,.vprb .vprb-h2,.vprb-org h2{font-family:'Lora',Georgia,serif !important;font-weight:500 !important}
+  .vprb,.vprb p,.vprb li,.vprb span,.vprb a,.vprb summary,.vprb figcaption,.vprb button,.vprb-pr,.vprb-pr p,.vprb-pr li,.vprb-tr,.vprb-tr b,.vprb-tr span,.vprb-intro,.vprb-intro p,.vprb-intro a,.vprb-intro span{font-family:'Plus Jakarta Sans','Inter',sans-serif !important}
+  .vprb .vprb-rit__l span,.vprb .vprb-zonas b,.vprb .vprb-ing__l b,.vprb .vprb-lab__l b,.vprb .vprb-gar__l b,.vprb .vprb-off__l b,.vprb .vprb-rv blockquote{font-family:'Lora',Georgia,serif !important}
+  .vprb,.vprb-pr,.vprb-tr,.vprb-intro{letter-spacing:0}
   #lbn-bundle{scroll-margin-top:110px}
 </style>
