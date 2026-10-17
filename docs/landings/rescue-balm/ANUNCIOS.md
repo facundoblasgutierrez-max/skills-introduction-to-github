@@ -120,3 +120,17 @@ Son los dos videos del bálsamo que más vendieron en «⚗️ ABO | TESTEO | 21
 - **Anuncios, en ACTIVE y sin errores:**
   - Conjunto 1: `120251296552780443` (reel 1) y `120251296553010443` (reel 2).
   - Conjunto 2: `120251296553110443` (reel 1) y `120251296553200443` (reel 2).
+
+## v3 sin catálogo (17-10-2026)
+
+Facu vio la campaña como «de catálogo» y la archivó. La causa es que `ads_create_campaign` le pone
+solo `promoted_object.product_catalog_id` (725215773290754) a la campaña.
+
+Se rearmó desde cero por API:
+
+- **Campaña nueva:** `120251296859330443`. Se le vació el `promoted_object`.
+- **Conjuntos:** `120251296861060443` (ángulo 1) y `120251296861600443` (ángulo 2).
+  - Píxel Compra, $5.000 mínimo cada uno, AR, mujeres, `home`, sin compradores de 180 días.
+- **Anuncios:** 14, siete por conjunto: los mismos 5 estáticos más los 2 reels ganadores.
+- **Creatividades:** nuevas, con `product_extensions` en OPT_OUT además del resto de mejoras.
+- La campaña queda en pausa para que Facu confirme en Ads Manager que no dice catálogo y le dé play.
