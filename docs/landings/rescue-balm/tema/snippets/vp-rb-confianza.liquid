@@ -3,7 +3,7 @@
 {%- assign v = product.selected_or_first_available_variant -%}
 <ul class="vprb-tr">
   <li><b><svg class="vprb-tr__f" viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>Sale desde Argentina</b><span>Llega en 2 a 5 días hábiles{% if fst > 0 %} · gratis desde {{ fst | money_without_trailing_zeros }}{% endif %}</span></li>
-  <li><b>Cambios dentro de 7 días</b><span>Sin uso y en su empaque</span></li>
+  <li><b>Garantía de 30 días</b><span><a href="/pages/garantia-30-dias-rescue-balm">Cómo funciona</a></span></li>
   <li><b>Pago seguro</b><span>{% render 'lbn-cuotas', estilo: 'resumen' %}</span></li>
   <li><b>Hecho en Argentina</b><span>Laboratorio propio · vegano</span></li>
 </ul>
@@ -45,6 +45,7 @@
   .vprb-tr li{background:#fbfaf6;padding:12px;display:flex;flex-direction:column;gap:3px}
   .vprb-tr b{font-size:12.5px;color:#1d3c34;display:flex;align-items:center;gap:6px}
   .vprb-tr span{font-size:11.5px;line-height:1.35;color:#6c726c}
+  .vprb-tr span a{color:#6c726c;text-decoration:underline;text-underline-offset:2px}
   .vprb-tr__f{width:15px;height:10px;border-radius:2px;flex:0 0 15px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
   .vprb-stock{margin:12px 0 0;font-family:'Plus Jakarta Sans','Inter',sans-serif;font-size:13px;font-weight:700;color:#8a5a37}
   .vprb-ac{margin:16px 0 0;border-top:1px solid #d9d3c4;font-family:'Plus Jakarta Sans','Inter',sans-serif;color:#26302c}

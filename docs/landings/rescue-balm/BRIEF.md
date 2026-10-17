@@ -189,3 +189,27 @@ Foto nueva: `vp-rb-lp-calendula.png` (frasco entre caléndulas, Fitz Roy de fond
 El bloque «laboratorio» se fundió en «La Patagonia hace el producto» (punto 03, «Hecho en
 Argentina»).
 
+
+## 10 · Garantía de 30 días, comparativo vegano y estáticos (17-10, noche)
+
+- **Garantía (decisión de Facu: 30 días).** Página pública `/pages/garantia-30-dias-rescue-balm`
+  (gid://shopify/Page/161882767611). Condiciones a la vista, al estilo Frøya: foto del día 1 y del
+  día del pedido, 21 noches de uso, foto del frasco, número de pedido, una por clienta, sobre el
+  primer frasco. Deja explícito el derecho de arrepentimiento de 10 días (Ley 24.240, art. 34).
+  En la landing: bloque «Garantía de 30 días» con el link; en el buy box, «Garantía de 30 días ·
+  Cómo funciona».
+- **Lo que NO se hizo:** esconder condiciones para que la garantía sea imposible de usar. Una
+  garantía anunciada que en la práctica no se puede pedir es publicidad engañosa (Ley 24.240 y
+  DNU 274/2019): expone a la marca a multas y a que Meta rechace los anuncios. La fricción que
+  queda (las fotos, las 21 noches) está publicada y es la misma que usa Frøya.
+- **Comparativo «¿Tu bálsamo es vegano?»**: pote genérico pixelado («Otro bálsamo anti-age»: cera
+  de abejas, colágeno) frente al nuestro. No es la foto real de Tala: usar su foto sería
+  usar material ajeno con derecho de autor. Lo que dice es verificable: Tala declara en su web cera
+  de abejas y colágeno hidrolizado. En su web no encontré que digan «vegano».
+- **6 estáticos 4:5** en Shopify Files (`rb-est-1…6`):
+  1. sequedad;
+  2. vegano;
+  3. 70% agua;
+  4. Patagonia;
+  5. madre e hija;
+  6. 2×1.
