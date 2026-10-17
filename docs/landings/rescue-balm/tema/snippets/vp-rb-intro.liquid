@@ -1,0 +1,20 @@
+{%- comment -%} VP-RB · arriba del título (17-10-2026, C11). Marca + origen + valoración real de VegaPlay (Judge.me) + colores VegaPlay para el selector, sólo en esta plantilla. {%- endcomment -%}
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<div class="vprb-intro">
+  <p class="vprb-intro__brand"><svg viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>VegaPlay · Patagonia argentina</p>
+  <a class="vprb-intro__rate" href="#vprb-resenas"><span aria-hidden="true">★★★★★</span><b>4,8</b><span>reseñas de clientas VegaPlay</span></a>
+</div>
+<style>
+  .vprb-intro{font-family:'Plus Jakarta Sans','Inter',sans-serif;color:#1d3c34;margin:0 0 6px}
+  .vprb-intro__brand{display:flex;align-items:center;gap:8px;margin:0 0 8px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;font-size:11px;color:#ad7c59}
+  .vprb-intro__brand svg{width:18px;height:12px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  .vprb-intro__rate{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#1d3c34;text-decoration:none}
+  .vprb-intro__rate span:first-child{color:#ad7c59;letter-spacing:1px}
+  .vprb-intro__rate span:last-child{text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c3b3}
+  body:has(.vprb-intro) .product__title h1,body:has(.vprb-intro) .product__title h2{font-family:'Lora',Georgia,serif !important;font-weight:500 !important;color:#1d3c34;letter-spacing:-.01em;line-height:1.08}
+  body:has(.vprb-intro) .lbn-bundle__opt.is-active{background:#e5ede8 !important;border-color:#1d3c34 !important;box-shadow:4px 4px 0 rgba(29,60,52,.14) !important}
+  body:has(.vprb-intro) .lbn-bundle__badge,body:has(.vprb-intro) .lbn-bundle__badge--soft,body:has(.vprb-intro) .lbn-bundle__cqs{background:#1d3c34 !important;border-color:#1d3c34 !important}
+  body:has(.vprb-intro) .lbn-bundle__save,body:has(.vprb-intro) .lbn-bundle__pct{background:#f1e6dc !important;color:#8a5a37 !important}
+  body:has(.vprb-intro) .product-form__submit{background:#1d3c34 !important;color:#f3f1ea !important;border-color:#1d3c34 !important}
+  #lbn-bundle{scroll-margin-top:110px}
+</style>

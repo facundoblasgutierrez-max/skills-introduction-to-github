@@ -1,0 +1,757 @@
+{%- comment -%}
+  LBN BUNDLE — selector de packs UNIFICADO. Una sola pieza para todos los kits.
+  Uso:  {% render 'lbn-bundle-uni' %}
+  Params opcionales:  dias: 30   (dias de tratamiento por unidad)
+                      lp01: true  (4-oct, sólo Kit Reafirmante piloto MIL-KRF-LP01: rótulos por
+                                   ahorro, sin días de uso ni nota, oferta en la barra de envío)
+                      cta: 'texto del botón' (default 'Agregar al carrito')
+                      nota: 'texto chico debajo del selector'
+
+  18-sep — El layout del Kit Reafirmante (antes "test" solo en ese handle) pasa a
+  ser el layout de TODOS los kits:
+   - barra negra de envio gratis arriba, 2 lineas por opcion, pill de % OFF,
+     "X dias de tratamiento · ahorras $Y", preselecciona 2 unidades ("Mas elegida").
+   - El escalon de 3 unidades SOLO aparece donde existe el descuento automatico
+     real "25% OFF llevando 3" (lista kit25_handles). Si se suma un kit a ese
+     descuento en Shopify, agregar su handle aca y aparece el escalon.
+   - Envio gratis: la regla real corre sobre PRECIO DE LISTA (product.price * qty)
+     >= settings.free_shipping_threshold. Si 1 unidad ya llega, la barra dice
+     "en toda la compra"; si no, dice "desde $X" y marca en verde las opciones
+     que si llegan.
+   - Posicion: siempre arriba de Cantidad + Agregar al carrito (ver script).
+  Descuentos reales detras: "15% OFF en la 2da unidad" (7,5% del pedido desde 2u,
+  todos los productos) y "25% OFF llevando 3" (solo handles de kit25_handles).
+  18-sep tarde: los 10 kits tienen su propio descuento 25% (3 del mismo kit), activos.
+{%- endcomment -%}
+{%- liquid
+  assign pre_show_offer = false
+  if product.handle == 'pre-show-serum'
+    assign pre_show_offer = true
+  endif
+  assign kit25_handles = 'kit-anti-brotes-361,kit-beautycaster®-super-renovacion-celular,kit-cloud-skin,kit-cuello-menton-lift-like-milaborit,kit-firmeza-hidratacion-profunda-botox-like-milaborit-1,kit-firmeza-proteccion-diaria-botox-like-dia,kit-glass-skin-duo,kit-m-start,kit-repara-tu-piel-dia-noche-®vegaplay,kit-tratamiento-ojeras-bolsas,kit-dia-de-la-madre,vegaplay-®-patagonia-rescue-balm-balsamo-multiuso-con-calendula'
+  assign kit25_list = kit25_handles | split: ','
+  assign kit25 = false
+  if kit25_list contains product.handle
+    assign kit25 = true
+  endif
+  # 30-sep — en los kits las opciones dicen «1 kit / 2 kits» y «$X por kit» (pedido de Facu)
+  assign es_kit = false
+  if kit25 or product.handle contains 'kit-'
+    assign es_kit = true
+  endif
+  # 17-oct — Patagonia Rescue Balm (C11): 2do bálsamo al 44% OFF (BxGy) y 25% OFF llevando 3
+  # (está en kit25_handles por el descuento, pero no es kit). Textos propios abajo.
+  assign rbalm = false
+  if product.handle == 'vegaplay-®-patagonia-rescue-balm-balsamo-multiuso-con-calendula'
+    assign rbalm = true
+    assign es_kit = false
+  endif
+
+  assign n = 2
+  if kit25
+    assign n = 3
+  endif
+  assign pre = 1
+  assign best = 2
+
+  assign mas_elegido_handles = 'kit-firmeza-hidratacion-profunda-botox-like-milaborit-1,kit-cuello-menton-lift-like-milaborit,ultrabalance5-serum,hydraplump-ocean-serum-milaborit,crema-corporal-rosa-mosqueta-vegaplay' | split: ','
+  assign mas_elegido = false
+  if mas_elegido_handles contains product.handle
+    assign mas_elegido = true
+  endif
+
+  assign dias_u = dias | default: 30
+  assign nota_txt = nota | default: ''
+  assign reaf_list = 'kit-firmeza-hidratacion-profunda-botox-like-milaborit-1,kit-firmeza-proteccion-diaria-botox-like-dia,kit-cuello-menton-lift-like-milaborit' | split: ','
+  assign kit_list  = 'kit-tratamiento-ojeras-bolsas,kit-m-start,kit-cloud-skin,kit-anti-brotes-361,kit-glass-skin-duo,kit-beautycaster®-super-renovacion-celular,kit-repara-tu-piel-dia-noche-®vegaplay' | split: ','
+  if nota_txt == blank
+    if reaf_list contains product.handle
+      assign nota_txt = 'La firmeza se consolida entre el mes 2 y el 3 de uso sostenido.'
+    elsif kit_list contains product.handle
+      assign nota_txt = 'Los resultados se consolidan con el uso sostenido.'
+    endif
+  endif
+
+  if lp01
+    assign nota_txt = nota | default: ''
+  endif
+  assign cta_txt = cta | default: 'Agregar al carrito'
+
+  assign fst = settings.free_shipping_threshold | times: 100
+  assign free_from_one = false
+  if fst <= 0 or product.price >= fst
+    assign free_from_one = true
+  endif
+
+  assign ref = product.compare_at_price
+  if ref == blank or ref < product.price
+    assign ref = product.price
+  endif
+  assign lp_pct = ref | minus: product.price | times: 100.0 | divided_by: ref | round
+
+  # 21-sep — opcion COMBO: 2 unidades de este producto + 1 del producto par.
+  # Solo en los handles de combo_pairs (handle:handle_del_par). Sin descuento propio:
+  # corre el mismo "15% OFF en la 2da unidad" (7,5% del pedido desde 2u) que la opcion de 2.
+  # Si alguno de los dos no tiene stock para el combo, la opcion no se muestra.
+  # 22-sep — sumados EyeUp + Bouncy Cream y UltraBalance5+ + SoftCloud (espuma). Los textos
+  # de cada combo (nombre, detalle, para que sirve el complemento) van en el case de abajo.
+  assign combo_pairs = 'pre-show-serum:easy-melt-cleanser-balm,eyeup-all-in-1:bouncy-cream,ultrabalance5-serum:softcloud-cleanser,hydraplump-ocean-serum-milaborit:night-reset-malbec-cream,boost-collagen-malbec-serum:night-reset-malbec-cream,crema-corporal-rosa-mosqueta-vegaplay:vegaplay-®-patagonia-rescue-balm-balsamo-multiuso-con-calendula' | split: ','
+  assign combo = false
+  for pair in combo_pairs
+    assign pp = pair | split: ':'
+    if pp[0] == product.handle
+      assign combo_p = all_products[pp[1]]
+      assign combo_img = 'combo-' | append: pp[0] | append: '.png'
+    endif
+  endfor
+  # combo_sep: espacio duro entre el "1" y el complemento, para que el 1 no quede colgado
+  assign combo_sep = '&nbsp;'
+  case product.handle
+    when 'pre-show-serum'
+      assign combo_sep = ' '
+      assign combo_name = 'Pre-Show + limpieza'
+      assign combo_main_t = product.title | remove: ' Milaborit' | remove: ' Serum'
+      assign combo_add_t = combo_p.title | remove: ' Milaborit'
+      assign combo_why = 'Con la piel bien limpia, el serum rinde mejor. El bálsamo saca maquillaje y protector sin resecar.'
+      assign combo_noun = 'el bálsamo'
+      assign combo_img_h = 421
+    when 'eyeup-all-in-1'
+      assign combo_name = 'EyeUp + hidratación'
+      assign combo_main_t = 'EyeUp'
+      assign combo_add_t = 'Bouncy Cream'
+      assign combo_why = 'La crema sella la hidratación y fortalece la barrera.'
+      assign combo_noun = 'la crema'
+      assign combo_img_h = 421
+    when 'ultrabalance5-serum'
+      assign combo_name = 'UltraBalance + limpieza'
+      assign combo_main_t = 'UltraBalance5+ Serum'
+      assign combo_add_t = 'SoftCloud Cleanser'
+      assign combo_why = 'Con la piel bien limpia, el serum se absorbe mejor. La espuma limpia en profundidad sin resecar.'
+      assign combo_noun = 'la espuma'
+      assign combo_img_h = 421
+    when 'hydraplump-ocean-serum-milaborit'
+      # 28-sep — upsell de la crema: es el Paso 2 del Kit Cuello y Mentón
+      assign combo_name = 'Rutina cuello día + noche'
+      assign combo_main_t = 'HydraPlump+'
+      assign combo_add_t = 'NightReset+ Cream'
+      assign combo_why = 'La crema sella el serum de noche en cuello y mentón.'
+      assign combo_noun = 'la crema'
+      assign combo_img_h = 421
+    when 'boost-collagen-malbec-serum'
+      # 29-sep — tratamiento completo del Kit Reafirmante: serum de día + NightReset de noche
+      assign combo_name = 'Kit Reafirmante día + noche'
+      assign combo_main_t = 'Boost Collagen'
+      assign combo_add_t = 'NightReset+ Cream'
+      assign combo_why = 'La crema de noche completa el tratamiento reafirmante.'
+      assign combo_noun = 'la crema'
+      assign combo_img_h = 421
+    when 'crema-corporal-rosa-mosqueta-vegaplay'
+      # 17-oct — Crema Corporal VegaPlay (C10): ritual completo = 2 cremas + Patagonia Rescue Balm
+      assign combo_name = 'Ritual completo'
+      assign combo_main_t = 'Cremas Corporales'
+      assign combo_add_t = 'Patagonia Rescue Balm'
+      assign combo_why = 'El bálsamo repara las zonas más secas: codos, rodillas, talones y manos.'
+      assign combo_noun = 'el bálsamo'
+      assign combo_img_h = 421
+  endcase
+  if combo_p != blank and combo_p.available
+    assign cv_main = product.selected_or_first_available_variant
+    assign cv_add = combo_p.selected_or_first_available_variant
+    assign ok_main = false
+    assign ok_add = false
+    if cv_main.available
+      if cv_main.inventory_management != 'shopify' or cv_main.inventory_policy == 'continue' or cv_main.inventory_quantity >= 2
+        assign ok_main = true
+      endif
+    endif
+    if cv_add.available
+      if cv_add.inventory_management != 'shopify' or cv_add.inventory_policy == 'continue' or cv_add.inventory_quantity >= 1
+        assign ok_add = true
+      endif
+    endif
+    if ok_main and ok_add
+      assign combo = true
+      assign combo_pagan = cv_main.price | times: 2 | plus: cv_add.price
+      assign combo_pay = combo_pagan | times: 0.925 | round
+      assign ref_main = cv_main.compare_at_price
+      if ref_main == blank or ref_main < cv_main.price
+        assign ref_main = cv_main.price
+      endif
+      assign ref_add = cv_add.compare_at_price
+      if ref_add == blank or ref_add < cv_add.price
+        assign ref_add = cv_add.price
+      endif
+      assign combo_was = ref_main | times: 2 | plus: ref_add
+      assign combo_save = combo_was | minus: combo_pay
+      assign pay2 = product.price | times: 2 | times: 0.925 | round
+      assign combo_extra = combo_pay | minus: pay2
+    endif
+  endif
+
+  # 29-sep — UltraBalance5+ en 2x1: 2 unidades pagan $19.900 menos (descuento automatico
+  # real "2x1 UltraBalance5+ (2 por $79.900)", BxGy, NO combina con el 15% de la 2da unidad).
+  # Si cambia el monto del descuento en Shopify, cambiar dosx1_off aca.
+  # 30-sep — sumado Pre-Show: "2x1 Pre-Show Serum (2 por $74.900)", $20.900 menos el par.
+  assign dosx1 = false
+  assign dosx1_off = 0
+  if product.handle == 'ultrabalance5-serum'
+    assign dosx1_off = 1990000
+  # 5-oct — Pre-Show SALE del 2x1: pasa a la oferta de rutina (Pre-Show + balsamo), ver rut_pairs.
+  # El descuento "2×1 — 2 por $59.900" se pausa cuando el Pre-Show baja a $35.000.
+  elsif product.handle == 'crema-corporal-rosa-mosqueta-vegaplay'
+    # 17-oct — Crema Corporal VegaPlay (C10): $36.900 (tachado $65.900) -> 2 por $65.900, $7.900 menos el par
+    # (descuento real "2×1 — 2 por $65.900 — Crema Corporal VegaPlay", BxGy). Mismo número en vp-cc-landing (vpcc_off).
+    assign dosx1_off = 790000
+  elsif rbalm
+    # 17-oct — Rescue Balm: descuento real "2do Rescue Balm al 44% OFF" (BxGy, porcentaje).
+    assign dosx1_off = product.price | times: 0.44 | round
+  elsif product.handle == 'kit-dia-de-la-madre'
+    # 3-oct — Kit Día de la Madre: $69.900 (tachado $109.900) -> 2 por $109.900, $29.900 menos el par
+    # (descuento real "2×1 — 2 por $109.900 — Kit Día de la Madre", BxGy). 3 kits = 25% OFF (kit25).
+    assign dosx1_off = 2990000
+  endif
+  # 3-oct — textos propios del Kit Día de la Madre (1 mamá / 2 mamá + vos / 3 + papá)
+  assign mama = false
+  if product.handle == 'kit-dia-de-la-madre'
+    assign mama = true
+    if nota_txt == blank
+      assign nota_txt = 'Cada kit trae 3-EN-1 Serum + Bouncy Cream. Con el 2×1, uno es para ella y otro para vos.'
+    endif
+  endif
+  # 4-oct — OFERTA CON KIT (pedido de Facu): en el individual, la opcion del medio deja de
+  # ser "2 unidades" y pasa a ser el KIT que lo contiene (serum + crema), al precio del kit.
+  # Se agrega el producto KIT, no las dos piezas sueltas: sueltas entra el 7,5% de "2da
+  # unidad" y el precio no coincide con el del kit. La 3ra opcion es kit + 1 unidad mas de
+  # este producto (2 serums + crema); ahi si corre el 7,5% porque son 2 unidades en el carrito.
+  # Pares individual:kit en kit_pairs; textos por handle en el case. Imagenes:
+  # assets/kit-<handle>.png (opcion 2) y assets/combo-<handle>.png (opcion 3).
+  # Si el kit o el individual no tienen stock, vuelve el selector de siempre.
+  assign kit_pairs = 'boost-collagen-malbec-serum:kit-firmeza-hidratacion-profunda-botox-like-milaborit-1,hydraplump-ocean-serum-milaborit:kit-cuello-menton-lift-like-milaborit,eyeup-all-in-1:kit-tratamiento-ojeras-bolsas,pre-show-serum:kit-glass-skin-duo' | split: ','
+  assign kitopt = false
+  for pair in kit_pairs
+    assign pp = pair | split: ':'
+    if pp[0] == product.handle
+      assign kit_p = all_products[pp[1]]
+    endif
+  endfor
+  # 5-oct — Pre-Show usa el Kit Glass Skin Duo (kit_pairs); la rutina suelta queda de respaldo si el kit no tiene stock.
+  # 5-oct — RUTINA SUELTA: igual que el kit pero sin producto kit (no existe): la opcion del medio
+  # agrega las dos piezas (individual + complemento) y corre el 7,5% de "2da unidad", lo mismo
+  # en la 3ra (2 individuales + complemento). Pares en rut_pairs (individual:complemento).
+  assign rut_pairs = 'pre-show-serum:easy-melt-cleanser-balm' | split: ','
+  for pair in rut_pairs
+    assign pp = pair | split: ':'
+    if pp[0] == product.handle
+      assign rut_p = all_products[pp[1]]
+    endif
+  endfor
+  assign mv = product.selected_or_first_available_variant
+  assign ref_m = mv.compare_at_price
+  if ref_m == blank or ref_m < mv.price
+    assign ref_m = mv.price
+  endif
+  if kit_p != blank and kit_p.available
+    assign kv = kit_p.selected_or_first_available_variant
+    if kv.available and mv.available
+      assign kitopt = true
+      # "antes" del kit = su precio tachado (hoy $92.400 = las dos piezas a precio de lista)
+      assign kit_was = kv.compare_at_price | default: 0
+      if kit_was < kv.price
+        assign kit_was = kv.price
+      endif
+      assign kit_pay = kv.price
+      assign kit_bruto = kv.price
+      assign kit_items = kv.id | append: ':1'
+      assign k3_pagan = kv.price | plus: mv.price
+      assign k3_items = kv.id | append: ':1,' | append: mv.id | append: ':1'
+      assign kit_alt = kit_p.title
+    endif
+  elsif rut_p != blank and rut_p.available
+    assign av = rut_p.selected_or_first_available_variant
+    assign ok_m = false
+    if mv.available
+      if mv.inventory_management != 'shopify' or mv.inventory_policy == 'continue' or mv.inventory_quantity >= 2
+        assign ok_m = true
+      endif
+    endif
+    if ok_m and av.available
+      assign kitopt = true
+      assign ref_a = av.compare_at_price
+      if ref_a == blank or ref_a < av.price
+        assign ref_a = av.price
+      endif
+      assign kit_bruto = mv.price | plus: av.price
+      assign kit_pay = kit_bruto | times: 0.925 | round
+      assign kit_was = ref_m | plus: ref_a
+      assign kit_items = mv.id | append: ':1,' | append: av.id | append: ':1'
+      assign k3_pagan = mv.price | times: 2 | plus: av.price
+      assign k3_items = mv.id | append: ':2,' | append: av.id | append: ':1'
+      assign kit_alt = product.title | append: ' y ' | append: rut_p.title
+    endif
+  endif
+  if kitopt
+      case product.handle
+        when 'boost-collagen-malbec-serum'
+          assign kit_name = 'Rutina completa'
+          assign kit_inc = '1 Boost Collagen + 1&nbsp;NightReset+ Cream'
+          assign kit_why = 'Serum de día y crema de noche: el tratamiento reafirmante completo.'
+          assign kit_badge = 'Más vendido'
+          assign k3_name = 'Rutina + 1 serum extra'
+          assign k3_inc = '2 Boost Collagen + 1&nbsp;NightReset+ Cream'
+          assign k3_noun = 'otro serum'
+        when 'hydraplump-ocean-serum-milaborit'
+          assign kit_name = 'Rutina completa'
+          assign kit_inc = '1 HydraPlump+ + 1&nbsp;NightReset+ Cream'
+          assign kit_why = 'El serum y la crema que lo sella de noche: la rutina completa para cuello y mentón.'
+          assign kit_badge = 'Más vendido'
+          assign k3_name = 'Rutina + 1 serum extra'
+          assign k3_inc = '2 HydraPlump+ + 1&nbsp;NightReset+ Cream'
+          assign k3_noun = 'otro serum'
+        when 'eyeup-all-in-1'
+          assign kit_name = 'Rutina completa'
+          assign kit_inc = '1 EyeUp + 1&nbsp;Bouncy Cream'
+          assign kit_why = 'EyeUp para el contorno y la crema que sella la hidratación: la rutina completa para ojeras y bolsas.'
+          assign kit_badge = 'Más vendido'
+          assign k3_name = 'Rutina + 1 EyeUp extra'
+          assign k3_inc = '2 EyeUp + 1&nbsp;Bouncy Cream'
+          assign k3_noun = 'otro EyeUp'
+        when 'pre-show-serum'
+          assign kit_name = 'Rutina completa'
+          assign kit_inc = 'Paso 1: bálsamo · Paso 2: Pre-Show'
+          assign kit_why = 'El bálsamo limpia sin resecar y deja la piel lista para el serum. El Pre-Show le da glow y textura lisa, con o sin maquillaje.'
+          assign kit_badge = 'Más vendido'
+          assign k3_name = 'Rutina + 1 Pre-Show extra'
+          assign k3_inc = '2 Pre-Show + 1&nbsp;bálsamo Easy Melt'
+          assign k3_noun = 'otro Pre-Show'
+      endcase
+      assign kit_img = 'kit-' | append: product.handle | append: '.png'
+      assign k3_img = 'combo-' | append: product.handle | append: '.png'
+      assign kit_save = kit_was | minus: kit_pay
+      assign k3_pay = k3_pagan | times: 0.925 | round
+      assign k3_was = kit_was | plus: ref_m
+      assign k3_save = k3_was | minus: k3_pay
+      assign k3_extra = k3_pay | minus: kit_pay
+      assign n = 1
+  endif
+
+  if pre_show_offer
+    assign n = 2
+    assign dosx1_off = product.price | times: 2 | minus: ref
+    if kitopt and rut_p != blank and rut_p.available
+      assign av = rut_p.selected_or_first_available_variant
+      assign ref_a = av.compare_at_price | default: av.price
+      if ref_a < av.price
+        assign ref_a = av.price
+      endif
+      assign k3_pay = ref | plus: av.price
+      assign k3_was = ref | times: 2 | plus: ref_a
+      assign k3_save = k3_was | minus: k3_pay
+      assign k3_pagan = mv.price | times: 2 | plus: av.price
+      assign k3_items = mv.id | append: ':2,' | append: av.id | append: ':1'
+    endif
+  endif
+
+  if dosx1_off > 0
+    assign dosx1 = true
+    assign pay2 = product.price | times: 2 | minus: dosx1_off
+    if combo
+      assign combo_pay = pay2 | plus: cv_add.price
+      assign combo_save = combo_was | minus: combo_pay
+      assign combo_extra = combo_pay | minus: pay2
+    endif
+  endif
+-%}
+<style>
+#lbn-bundle{font-family:'Inter',sans-serif;color:#111;margin:18px 0 24px;}
+#lbn-bundle *{box-sizing:border-box;}
+.lbn-bundle__shipbar{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;background:#f4f0ed;border:0;height:44px;padding:0 14px;margin:0 0 20px;width:100%;text-align:center}
+.lbn-bundle__shipbar svg{width:18px;height:18px;flex:0 0 18px;display:block;color:#232120}
+.lbn-bundle__shipbar b{font-family:'Roboto Mono',monospace;text-transform:uppercase;letter-spacing:.14em;font-size:13px;font-weight:700;line-height:1;color:#232120}
+.lbn-bundle__shipbar span{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.3;color:#8a857f}
+@media(max-width:749px){.lbn-bundle__shipbar{height:auto;min-height:44px;padding:8px 12px;gap:6px}.lbn-bundle__shipbar b{font-size:12px}.lbn-bundle__shipbar span{font-size:11px}}
+/* contradice el envio gratis: fuera en las fichas que usan este selector */
+.product__info-container .product__tax{display:none}
+.lbn-bundle__opt{position:relative;border:1px solid #e2ddd6;border-radius:0;padding:20px 18px;margin-top:20px;transition:background .15s ease,border-color .15s ease;cursor:pointer;}
+.lbn-bundle__opt:first-of-type{margin-top:0}
+.lbn-bundle__opt:hover{border-color:#bdb6ad}
+.lbn-bundle__opt.is-active{background:#EBE359;border:1.5px solid #232120;padding:19.5px 17.5px;box-shadow:5px 5px 0 rgba(35,33,32,.13)}
+.lbn-bundle__opt label{display:flex;align-items:center;justify-content:space-between;gap:13px;cursor:pointer;margin:0;width:100%;}
+.lbn-bundle__opt input[type="radio"]{position:absolute;opacity:0;width:0;height:0;}
+.lbn-bundle__dot{flex:0 0 17px;width:17px;height:17px;border:1px solid #cfc9c2;border-radius:50%;position:relative;background:#fff;align-self:center}
+.lbn-bundle__opt.is-active .lbn-bundle__dot{border-color:#111}
+.lbn-bundle__opt.is-active .lbn-bundle__dot::after{content:"";position:absolute;inset:3px;border-radius:50%;background:#111}
+.lbn-bundle__main{display:flex;flex-direction:column;gap:7px;flex:1;justify-content:center}
+.lbn-bundle__nameline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lbn-bundle__name{font-family:'Instrument Serif',serif;font-weight:400;font-size:20px;line-height:1;letter-spacing:-.01em;}
+.lbn-bundle__pct{display:inline-block;font-family:'Roboto Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.08em;background:#f1eee9;color:#232120;padding:4px 9px;border-radius:999px;white-space:nowrap;line-height:1}
+.lbn-bundle__pct--plain{background:transparent;color:#8a857f;border:1px solid #d8d3cc;font-weight:500}
+.lbn-bundle__meta{font-family:'Inter',sans-serif;font-size:12px;line-height:1.35;color:#5f5a55}
+.lbn-bundle__meta b{font-weight:600;color:#111}
+.lbn-bundle__free{color:#1d7a3e;font-weight:700;text-transform:uppercase;white-space:nowrap}
+/* 25-sep — estructura tipo "descuentos": etiqueta por resultado arriba, ahorro al lado
+   del nombre, dias de uso debajo y el precio anterior tachado en rojo. */
+.lbn-bundle__save{display:inline-flex;align-items:center;font-family:'Roboto Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:#f1eee9;color:#232120;padding:5px 10px;border-radius:999px;line-height:1;white-space:nowrap}
+.lbn-bundle__opt.is-active .lbn-bundle__save{background:#fff}
+.lbn-bundle__was{color:#c0392b !important;opacity:1 !important}
+.lbn-bundle__badge--soft{background:#232120;color:#fff;border-color:#232120}
+.lbn-bundle__price{font-family:'Roboto Mono',monospace;font-size:16px;letter-spacing:.03em;font-weight:700;text-align:right;white-space:nowrap;display:flex;flex-direction:column;justify-content:center;gap:2px;line-height:1.2}
+.lbn-bundle__was{display:block;font-size:12.5px;font-weight:500;text-decoration:line-through;}
+.lbn-bundle__badge{position:absolute;top:-11px;left:14px;z-index:2;line-height:1;background:#232120;color:#fff;border:1px solid #232120;font-family:'Roboto Mono',monospace;text-transform:uppercase;letter-spacing:.16em;font-size:10px;padding:4px 10px;}
+.lbn-bundle__badge--soft{background:#fff;color:#5f5a55;border:1px solid #e2ddd6}
+.lbn-bundle__nota{font-family:'Inter',sans-serif;font-size:11.5px;line-height:1.45;color:#8a857f;margin:16px 0 0}
+@media(min-width:750px){.lbn-bundle__price{font-size:16px;}}
+@media(max-width:749px){.lbn-bundle__name{font-size:18px}.lbn-bundle__meta{font-size:11.5px}}
+.lbn-bundle__thumb{flex:0 0 84px;width:84px;height:auto;display:block;align-self:center}
+.lbn-bundle__inc{display:block}
+.lbn-bundle__opt--combo .lbn-bundle__main{min-width:0}
+.lbn-bundle__nw{white-space:nowrap}
+.lbn-bundle__opt--combo .lbn-bundle__meta{display:flex;flex-direction:column;gap:3px}
+.lbn-bundle__why{color:#111;font-style:italic}
+@media(max-width:749px){.lbn-bundle__opt--combo label{display:grid;grid-template-columns:17px 72px minmax(0,1fr) auto;column-gap:12px;row-gap:12px;align-items:center}.lbn-bundle__opt--combo .lbn-bundle__dot{grid-column:1;grid-row:1 / span 2}.lbn-bundle__opt--combo .lbn-bundle__main{display:contents}.lbn-bundle__opt--combo .lbn-bundle__nameline{grid-column:2 / 4;grid-row:1}.lbn-bundle__opt--combo .lbn-bundle__price{grid-column:4;grid-row:1}.lbn-bundle__opt--combo .lbn-bundle__thumb{grid-column:2;grid-row:2;width:72px}.lbn-bundle__opt--combo .lbn-bundle__meta{grid-column:3 / 5;grid-row:2}}
+/* 30-sep — timeline de uso (Pre-Show): por qué 2 unidades = 60 días */
+.lbn-tl{margin:14px 0 4px;padding:14px 14px 12px;border:1px solid #e6e1dc;background:#faf8f5}
+.lbn-tl__t{font-family:'Roboto Mono',monospace;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:#5f5a55;margin:0 0 12px}
+.lbn-tl__row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;margin:0;padding:0;list-style:none}
+.lbn-tl__row:before{content:"";position:absolute;left:6px;right:6px;top:6px;height:2px;background:#e6e1dc}
+.lbn-tl__row li{position:relative;padding-top:20px}
+.lbn-tl__row li:before{content:"";position:absolute;left:0;top:0;width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #232120;box-sizing:border-box}
+.lbn-tl__row li.is-meta:before{background:#232120}
+.lbn-tl__d{display:block;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#ff5b00;margin-bottom:3px}
+.lbn-tl__x{display:block;font-size:13px;line-height:1.35;color:#232120}
+.lbn-tl__n{font-size:12px;color:#5f5a55;margin:12px 0 0;line-height:1.45}
+/* 30-sep — envío gratis sin caja gris: texto chico con subtexto y una línea fina a cada lado (pedido de Facu) */
+.lbn-bundle__shipbar{background:none !important;height:auto !important;min-height:0 !important;padding:0 !important;margin:0 0 18px !important;gap:12px !important;flex-wrap:nowrap !important}
+.lbn-ship__line{flex:1 1 20px;height:1px;background:#d9d4ce;min-width:16px}
+.lbn-ship__txt{display:flex;flex-direction:column;align-items:center;gap:4px;flex:0 1 auto;max-width:82%}
+.lbn-bundle__shipbar .lbn-ship__txt b{display:inline-flex;align-items:center;gap:7px;font-size:11px !important;letter-spacing:.18em}
+.lbn-bundle__shipbar .lbn-ship__txt b svg{width:15px;height:15px;flex:0 0 15px}
+.lbn-bundle__shipbar .lbn-ship__txt span{font-size:11px !important;line-height:1.35;color:#8a857f}
+/* 5-oct V4 — Kit Reafirmante (lp01): misma identidad La Beautyneta del selector (amarillo/negro, Instrument Serif, Roboto Mono). La etiqueta de cada opción es su nombre. */
+.lbn-bundle__h{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:24px;letter-spacing:-.01em;line-height:1.1;margin:0 0 12px;color:#111}
+.lbn-bundle--lp01 .lbn-bundle__opt{margin-top:12px}
+.lbn-bundle--lp01 .lbn-bundle__shipbar{margin:0 0 14px !important}
+.lbn-bundle--lp01 .lbn-ship__txt{max-width:100%}
+@media(max-width:749px){
+  .lbn-bundle--lp01 .lbn-bundle__opt label{display:grid;grid-template-columns:17px minmax(0,1fr) auto;column-gap:13px;row-gap:7px}
+  .lbn-bundle--lp01 .lbn-bundle__dot{grid-column:1;grid-row:1 / span 2}
+  .lbn-bundle--lp01 .lbn-bundle__main{display:contents}
+  .lbn-bundle--lp01 .lbn-bundle__nameline{grid-column:2 / -1;grid-row:1;min-width:0}
+  .lbn-bundle--lp01 .lbn-bundle__name{font-size:17px}
+  .lbn-bundle--lp01 .lbn-bundle__meta{grid-column:2;grid-row:2;min-width:0}
+  .lbn-bundle--lp01 .lbn-bundle__price{grid-column:3;grid-row:2}
+}
+.lbn-bundle__shipbar .lbn-ship__txt b.lbn-ship__offer{display:block;text-align:center;letter-spacing:.12em;line-height:1.45;color:#232120}
+/* 7-oct — cuotas sin interés escalonadas (snippets/lbn-cuotas): línea bajo el precio, cuota por opción y sello del tramo alto */
+.lbn-cq-pdp{font-family:'Inter',sans-serif;font-size:13px;line-height:1.4;color:#5f5a55;margin:4px 0 14px}
+.lbn-bundle__cq{display:block;margin-top:3px;color:#232120;font-weight:600}
+.lbn-bundle__cqs{display:inline-block;background:#232120;color:#fff;border:1px solid #232120;font-family:'Roboto Mono',monospace;text-transform:uppercase;letter-spacing:.12em;font-size:10px;line-height:1;padding:4px 9px;white-space:nowrap}
+
+.lbn-bundle--comfort{container-type:inline-size;container-name:lbn-offers}
+.lbn-bundle--comfort .lbn-bundle__opt label::after{content:"";position:absolute;inset:0;border-radius:6px}
+.lbn-bundle--comfort .lbn-bundle__opt{padding:16px;margin-top:18px;border:1px solid #e2ddd6;border-radius:6px;background:#fff;box-shadow:none}
+.lbn-bundle--comfort .lbn-bundle__opt.is-active{padding:16px;background:#f1eb86;border:1px solid #232120;border-radius:0;box-shadow:1px 1px 0 #232120}
+.lbn-bundle--comfort .lbn-bundle__opt:has(input:focus-visible){outline:2px solid #232120;outline-offset:3px}
+.lbn-bundle--comfort .lbn-bundle__opt label{min-height:48px;gap:12px}
+.lbn-bundle--comfort .lbn-bundle__dot{flex-basis:18px;width:18px;height:18px;border-color:#bcb6ad;align-self:center;margin:0}
+.lbn-bundle--comfort .lbn-bundle__dot::after{inset:3px}
+.lbn-bundle--comfort .lbn-bundle__main{min-width:0;gap:7px}
+.lbn-bundle--comfort .lbn-bundle__nameline{gap:6px 10px}
+.lbn-bundle--comfort .lbn-bundle__name{flex-basis:100%;font-size:20px;line-height:1.25;letter-spacing:0}
+.lbn-bundle--comfort .lbn-bundle__meta{font-size:12px;line-height:1.45}
+.lbn-bundle--comfort .lbn-bundle__cq{margin-top:3px;font-size:11.5px;font-weight:500}
+.lbn-bundle--comfort .lbn-bundle__price{font-size:16px;letter-spacing:0;gap:5px}
+.lbn-bundle--comfort .lbn-bundle__was{font-size:11px;color:#8a857f !important}
+.lbn-bundle--comfort .lbn-bundle__badge{top:-9px;left:16px;font-size:9px;line-height:1.2;letter-spacing:.07em;padding:3px 8px;max-width:calc(100% - 32px);background:#f6f3e9;color:#514b43;border-color:#dfd8cc}
+.lbn-bundle--comfort .lbn-bundle__save,.lbn-bundle--comfort .lbn-bundle__opt.is-active .lbn-bundle__save{font-size:10.5px;line-height:1.35;letter-spacing:0;padding:0;background:transparent;color:#615b53;font-weight:500;border-radius:0}
+.lbn-bundle--comfort .lbn-bundle__cqs{font-size:10px;line-height:1.35;letter-spacing:.02em;padding:0;background:transparent;color:#615b53;border:0;white-space:normal}
+.lbn-bundle--comfort .lbn-bundle__opt--combo .lbn-bundle__meta{gap:5px}
+.lbn-bundle--comfort .lbn-bundle__thumb{flex-basis:68px;width:68px}
+.lbn-bundle--comfort .lbn-bundle__why{font-style:normal;color:#6b655e}
+@container lbn-offers (max-width:520px){
+  .lbn-bundle--comfort .lbn-bundle__opt,.lbn-bundle--comfort .lbn-bundle__opt.is-active{padding:17px 14px;margin-top:18px}
+  .lbn-bundle--comfort .lbn-bundle__opt label{display:grid;grid-template-columns:18px minmax(0,1fr) auto;column-gap:10px;row-gap:10px;align-items:start}
+  .lbn-bundle--comfort .lbn-bundle__dot{grid-column:1;grid-row:1 / span 2;align-self:start;margin-top:3px}
+  .lbn-bundle--comfort .lbn-bundle__main{display:contents}
+  .lbn-bundle--comfort .lbn-bundle__nameline{grid-column:2 / -1;grid-row:1;min-width:0}
+  .lbn-bundle--comfort .lbn-bundle__name{font-size:19px}
+  .lbn-bundle--comfort .lbn-bundle__meta{grid-column:2;grid-row:2;min-width:0;font-size:12px;line-height:1.45}
+  .lbn-bundle--comfort .lbn-bundle__price{grid-column:3;grid-row:2;align-self:end;font-size:16px}
+  .lbn-bundle--comfort .lbn-bundle__opt--combo label{grid-template-columns:18px 52px minmax(0,1fr)}
+  .lbn-bundle--comfort .lbn-bundle__opt--combo .lbn-bundle__thumb{grid-column:2;grid-row:2;width:52px;align-self:start}
+  .lbn-bundle--comfort .lbn-bundle__opt--combo .lbn-bundle__meta{grid-column:3;grid-row:2}
+  .lbn-bundle--comfort .lbn-bundle__opt--combo .lbn-bundle__price{grid-column:2 / -1;grid-row:3;flex-direction:row-reverse;align-items:center;justify-content:flex-start;gap:10px;padding-top:9px;border-top:1px solid #e2ddd6}
+}
+@container lbn-offers (max-width:320px){
+  .lbn-bundle--comfort .lbn-bundle__opt:not(.lbn-bundle__opt--combo) .lbn-bundle__meta{grid-column:2 / -1}
+  .lbn-bundle--comfort .lbn-bundle__opt:not(.lbn-bundle__opt--combo) .lbn-bundle__price{grid-column:2 / -1;grid-row:3;flex-direction:row-reverse;align-items:center;justify-content:flex-start;gap:10px}
+}
+
+.product__info-container:has(.lbn-bundle--comfort) .product-form__buttons .product-form__submit{min-height:48px !important;height:48px !important;padding:10px 18px !important;border:1px solid #8a857f !important;box-shadow:none !important}
+.product__info-container:has(.lbn-bundle--comfort) .product-form__buttons .product-form__submit::after{box-shadow:none !important}
+.product__info-container:has(.lbn-bundle--comfort) .product-form__buttons .product-form__submit:focus-visible{outline:2px solid #232120;outline-offset:3px}
+.product__info-container:has(.lbn-bundle--comfort) .shopify-payment-button__button--unbranded{min-height:48px !important;height:48px !important;padding:10px 18px !important}
+</style>
+<div class="lbn-bundle{% if lp01 %} lbn-bundle--lp01{% endif %} lbn-bundle--comfort" id="lbn-bundle">
+  <p class="lbn-cq-pdp" data-lbn-cq="pdp" data-amount="{{ product.price }}">{%- render 'lbn-cuotas', amount: product.price, estilo: 'pdp' -%}</p>
+  {%- if lp01 -%}<p class="lbn-bundle__h">Elegí tu kit. Aprovechá el ahorro.</p>{%- endif -%}
+  <div class="lbn-bundle__shipbar">
+    <span class="lbn-ship__line" aria-hidden="true"></span>
+    <div class="lbn-ship__txt">
+      {%- if lp01 -%}
+      <b class="lbn-ship__offer">{% if free_from_one %}Envío gratis · {% endif %}{% render 'lbn-cuotas', estilo: 'hasta' %} · 10% OFF extra por transferencia</b>
+      {%- else -%}
+      <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h10v9H3z"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>Envío gratis</b>
+      <span>{% if free_from_one %}en esta compra, sin mínimo{% else %}desde {{ fst | money_without_trailing_zeros }}{% if combo %} antes de descuentos{% endif %}{% endif %} · {% render 'lbn-cuotas', estilo: 'hasta' %}</span>
+      {%- endif -%}
+    </div>
+    <span class="lbn-ship__line" aria-hidden="true"></span>
+  </div>
+  {%- for i in (1..n) -%}
+    {%- liquid
+      assign qty = i
+      if qty == 1
+        assign pay = product.price
+        assign was = ref
+      elsif dosx1 and qty == 2
+        assign pay = pay2
+        assign was = ref | times: qty
+        if pre_show_offer
+          assign was = product.price | times: qty
+        endif
+      elsif kit25 and qty >= 3
+        assign pay = product.price | times: qty | times: 0.75 | round
+        assign was = ref | times: qty
+      else
+        assign pay = product.price | times: qty | times: 0.925 | round
+        assign was = ref | times: qty
+      endif
+      assign save = was | minus: pay
+      assign unit = pay | divided_by: qty | divided_by: 100 | times: 100
+      assign subtotal = product.price | times: qty
+      assign dias_t = qty | times: dias_u
+      # en la ficha con combo, 1 unidad no repite el ahorro: ya se ve tachado en el precio de arriba
+      assign show_save = false
+      if save > 0
+        assign show_save = true
+      endif
+      if combo and qty == 1
+        assign show_save = false
+      endif
+      if kitopt and qty == 1
+        assign show_save = false
+      endif
+    -%}
+    <div class="lbn-bundle__opt{% if qty == pre %} is-active{% endif %}{% if qty == best %} lbn-bundle__opt--best{% endif %}" data-qty="{{ qty }}" data-pay="{{ pay | money }}" data-cents="{{ pay }}">
+      {%- liquid
+        assign rotulo = 'Para empezar'
+        if dosx1
+          assign rotulo = 'Descuento de hoy'
+        endif
+        if qty == 2
+          assign rotulo = 'Primeros resultados'
+        elsif qty >= 3
+          assign rotulo = 'Tratamiento completo'
+        endif
+        if lp01
+          if qty == 1
+            if lp_pct > 0
+              assign rotulo = '1 kit · ' | append: lp_pct | append: '% OFF'
+            else
+              assign rotulo = '1 kit'
+            endif
+          elsif qty == 2
+            assign rotulo = '2 kits · 15% extra en el segundo'
+          else
+            assign rotulo = '3 kits · 25% extra en los tres'
+          endif
+        endif
+        if mama
+          if qty == 1
+            assign rotulo = 'Para regalar'
+          elsif qty == 2
+            assign rotulo = '2×1 · Para compartir la rutina'
+          else
+            assign rotulo = '25% OFF · Para toda la familia'
+          endif
+        endif
+        if rbalm
+          if qty == 1
+            assign rotulo = 'Para probar'
+          elsif qty == 2
+            assign rotulo = 'Uno en casa, uno en la cartera'
+          else
+            assign rotulo = '25% OFF · Para regalar'
+          endif
+        endif
+      -%}
+      {%- if pre_show_offer and qty == best -%}
+        <span class="lbn-bundle__badge">🔥 Oferta especial</span>
+      {%- elsif mas_elegido and qty == best -%}
+        <span class="lbn-bundle__badge">🔥 Más elegido</span>
+      {%- else -%}
+        {%- unless lp01 -%}<span class="lbn-bundle__badge{% if qty != best %} lbn-bundle__badge--soft{% endif %}">{% if qty == best %}🔥 {% endif %}{{ rotulo }}</span>{%- endunless -%}
+      {%- endif -%}
+      <input type="radio" name="lbn-bundle" id="lbn-buy{{ qty }}"{% if qty == pre %} checked{% endif %}>
+      <label for="lbn-buy{{ qty }}"><span class="lbn-bundle__dot"></span><span class="lbn-bundle__main"><span class="lbn-bundle__nameline"><span class="lbn-bundle__name">{% if lp01 %}{{ rotulo }}{% elsif mama %}{% if qty == 1 %}1 kit · para mamá{% elsif qty == 2 %}2 kits · mamá + vos{% else %}3 kits · mamá, vos y papá{% endif %}{% elsif rbalm %}{{ qty }} bálsamo{% if qty > 1 %}s{% endif %}{% elsif pre_show_offer %}{% if qty == 2 %}<span class="lbn-preshow-2x1">2×1</span>{% else %}1 Pre-Show{% endif %}{% elsif dosx1 and qty == 2 %}2×1 Unidades{% elsif dosx1 %}1 Unidad{% elsif es_kit %}{{ qty }} kit{% if qty > 1 %}s{% endif %}{% else %}{{ qty }} unidad{% if qty > 1 %}es{% endif %}{% endif %}</span>{%- if show_save -%}<span class="lbn-bundle__save">Ahorrás {{ save | money_without_trailing_zeros }}</span>{%- endif -%}{%- capture cqs -%}{%- render 'lbn-cuotas', amount: pay, estilo: 'sello' -%}{%- endcapture -%}{%- if cqs != blank -%}<span class="lbn-bundle__cqs">{{ cqs }}</span>{%- endif -%}</span><span class="lbn-bundle__meta">{% if pre_show_offer and qty == 2 %}<span class="lbn-bundle__inc">2 Pre-Show Serum</span>{% endif %}{% if mama %}{% if qty == 1 %}3-EN-1 Serum + Bouncy Cream{% endif %}{% elsif lp01 %}{% else %}{{ dias_t }} días de uso{% endif %}{%- if qty > 1 %}{% unless mama or lp01 %} · {% endunless %}{{ unit | money_without_trailing_zeros }} por {% if es_kit %}kit{% else %}unidad{% endif %}{% endif -%}{%- if subtotal >= fst %}{% unless lp01 %} · <span class="lbn-bundle__free">envío gratis</span>{% endunless %}{% endif -%}<span class="lbn-bundle__cq">{%- render 'lbn-cuotas', amount: pay, estilo: 'opcion' -%}</span></span></span><span class="lbn-bundle__price"><span>{{ pay | money }}</span>{%- if was > pay -%}<span class="lbn-bundle__was">{{ was | money_without_trailing_zeros }}</span>{%- endif -%}</span></label>
+    </div>
+  {%- endfor -%}
+  {%- if kitopt -%}
+    {%- comment -%} 4-oct — opcion 2: el KIT (1 linea, el producto kit). data-items = lo que viaja a /cart/add. {%- endcomment -%}
+    {%- unless pre_show_offer -%}
+    <div class="lbn-bundle__opt lbn-bundle__opt--combo lbn-bundle__opt--best" data-qty="1" data-combo="kit" data-items="{{ kit_items }}" data-pay="{{ kit_pay | money }}" data-cents="{{ kit_pay }}">
+      {%- assign cyber_kit_handles = 'kit-firmeza-hidratacion-profunda-botox-like-milaborit-1,kit-cuello-menton-lift-like-milaborit,kit-tratamiento-ojeras-bolsas' | split: ',' -%}
+      <span class="lbn-bundle__badge">{%- if cyber_kit_handles contains kit_p.handle and kit_p.compare_at_price > kit_p.price -%}🔥 CYBER BEAUTY{%- else -%}🔥 {% if mas_elegido %}Más elegido{% else %}{{ kit_badge }}{% endif %}{%- endif -%}</span>
+      <input type="radio" name="lbn-bundle" id="lbn-buykit">
+      <label for="lbn-buykit"><span class="lbn-bundle__dot"></span><img class="lbn-bundle__thumb" src="{{ kit_img | asset_url }}" width="480" height="421" loading="lazy" alt="{{ kit_alt | escape }}"><span class="lbn-bundle__main"><span class="lbn-bundle__nameline"><span class="lbn-bundle__name">{{ kit_name }}</span>{%- if kit_save > 0 -%}<span class="lbn-bundle__save">Ahorrás {{ kit_save | divided_by: 100 | times: 100 | money_without_trailing_zeros }}</span>{%- endif -%}{%- capture cqs -%}{%- render 'lbn-cuotas', amount: kit_pay, estilo: 'sello' -%}{%- endcapture -%}{%- if cqs != blank -%}<span class="lbn-bundle__cqs">{{ cqs }}</span>{%- endif -%}</span><span class="lbn-bundle__meta"><span class="lbn-bundle__inc"><b>{{ kit_inc }}</b></span><span class="lbn-bundle__inc lbn-bundle__why">{{ kit_why }}</span>{%- if kit_bruto >= fst -%}<span class="lbn-bundle__inc"><span class="lbn-bundle__free">envío gratis</span></span>{%- endif -%}<span class="lbn-bundle__cq">{%- render 'lbn-cuotas', amount: kit_pay, estilo: 'opcion' -%}</span></span></span><span class="lbn-bundle__price"><span>{{ kit_pay | money }}</span>{%- if kit_was > kit_pay -%}<span class="lbn-bundle__was">{{ kit_was | money_without_trailing_zeros }}</span>{%- endif -%}</span></label>
+    </div>
+    {%- endunless -%}
+    {%- comment -%} opcion 3: kit + 1 unidad mas de este producto (2 lineas). {%- endcomment -%}
+    <div class="lbn-bundle__opt lbn-bundle__opt--combo" data-qty="2" data-combo="kit" data-items="{{ k3_items }}" data-pay="{{ k3_pay | money }}" data-cents="{{ k3_pay }}">
+      <span class="lbn-bundle__badge lbn-bundle__badge--soft">Tratamiento completo</span>
+      <input type="radio" name="lbn-bundle" id="lbn-buykit3">
+      <label for="lbn-buykit3"><span class="lbn-bundle__dot"></span><img class="lbn-bundle__thumb" src="{{ k3_img | asset_url }}" width="480" height="421" loading="lazy" alt="{{ kit_alt | escape }} y 1 {{ product.title | escape }}"><span class="lbn-bundle__main"><span class="lbn-bundle__nameline"><span class="lbn-bundle__name">{% if pre_show_offer %}Rutina completa{% else %}{{ k3_name }}{% endif %}</span><span class="lbn-bundle__save">Ahorrás {{ k3_save | divided_by: 100 | times: 100 | money_without_trailing_zeros }}</span>{%- capture cqs -%}{%- render 'lbn-cuotas', amount: k3_pay, estilo: 'sello' -%}{%- endcapture -%}{%- if cqs != blank -%}<span class="lbn-bundle__cqs">{{ cqs }}</span>{%- endif -%}</span><span class="lbn-bundle__meta"><span class="lbn-bundle__inc"><b>{{ k3_inc }}</b></span><span class="lbn-bundle__inc">{% if pre_show_offer %}Sumá el bálsamo por <b>{{ k3_pay | minus: pay2 | money_without_trailing_zeros }}</b> más que el pack de 2{% else %}Sumá {{ k3_noun }} por <b>{{ k3_extra | divided_by: 100 | times: 100 | money_without_trailing_zeros }}</b> más que la rutina{% endif %}{%- if k3_pagan >= fst %} · <span class="lbn-bundle__free">envío gratis</span>{% endif -%}</span><span class="lbn-bundle__cq">{%- render 'lbn-cuotas', amount: k3_pay, estilo: 'opcion' -%}</span></span></span><span class="lbn-bundle__price"><span>{{ k3_pay | money }}</span>{%- if k3_was > k3_pay -%}<span class="lbn-bundle__was">{{ k3_was | money_without_trailing_zeros }}</span>{%- endif -%}</span></label>
+    </div>
+  {%- elsif combo -%}
+    <div class="lbn-bundle__opt lbn-bundle__opt--combo" data-qty="2" data-combo="1" data-pay="{{ combo_pay | money }}" data-cents="{{ combo_pay }}" data-main="{{ cv_main.id }}" data-add="{{ cv_add.id }}">
+      <span class="lbn-bundle__badge lbn-bundle__badge--soft">Rutina completa</span>
+      <input type="radio" name="lbn-bundle" id="lbn-buycombo">
+      <label for="lbn-buycombo"><span class="lbn-bundle__dot"></span><img class="lbn-bundle__thumb" src="{{ combo_img | asset_url }}" width="480" height="{{ combo_img_h }}" loading="lazy" alt="2 {{ product.title | escape }} y 1 {{ combo_p.title | escape }}"><span class="lbn-bundle__main"><span class="lbn-bundle__nameline"><span class="lbn-bundle__name">{{ combo_name }}</span><span class="lbn-bundle__save">Ahorrás {{ combo_save | divided_by: 100 | times: 100 | money_without_trailing_zeros }}</span>{%- capture cqs -%}{%- render 'lbn-cuotas', amount: combo_pay, estilo: 'sello' -%}{%- endcapture -%}{%- if cqs != blank -%}<span class="lbn-bundle__cqs">{{ cqs }}</span>{%- endif -%}</span><span class="lbn-bundle__meta"><span class="lbn-bundle__inc"><b><span class="lbn-bundle__nw">2 {{ combo_main_t }}</span> + 1{{ combo_sep }}{{ combo_add_t }}</b></span><span class="lbn-bundle__inc lbn-bundle__why">{{ combo_why }}</span><span class="lbn-bundle__inc">Sumá {{ combo_noun }} por <b>{{ combo_extra | money_without_trailing_zeros }}</b> más que el pack de 2{%- if combo_was >= fst %} · <span class="lbn-bundle__free">envío gratis</span>{% endif -%}</span><span class="lbn-bundle__cq">{%- render 'lbn-cuotas', amount: combo_pay, estilo: 'opcion' -%}</span></span></span><span class="lbn-bundle__price"><span>{{ combo_pay | money }}</span>{%- if combo_was > combo_pay -%}<span class="lbn-bundle__was">{{ combo_was | money_without_trailing_zeros }}</span>{%- endif -%}</span></label>
+    </div>
+  {%- endif -%}
+  {%- if product.handle == 'pre-show-serum' -%}
+  <div class="lbn-tl">
+    <p class="lbn-tl__t">Qué notás y cuándo</p>
+    <ol class="lbn-tl__row">
+      <li><span class="lbn-tl__d">Día 1</span><span class="lbn-tl__x">Glow desde la primera aplicación.</span></li>
+      <li><span class="lbn-tl__d">Semana 3–4</span><span class="lbn-tl__x">La textura se ve más lisa y pareja.</span></li>
+      <li class="is-meta"><span class="lbn-tl__d">Día 60</span><span class="lbn-tl__x">Piel luminosa que se sostiene.</span></li>
+    </ol>
+    <p class="lbn-tl__n">1 unidad rinde unos 30 días. A los 60 días de uso sostenido la exfoliación suave muestra su mejor resultado.</p>
+  </div>
+  {%- endif -%}
+  {%- if product.handle == 'crema-corporal-rosa-mosqueta-vegaplay' -%}
+  <div class="lbn-tl">
+    <p class="lbn-tl__t">Qué notás y cuándo</p>
+    <ol class="lbn-tl__row">
+      <li><span class="lbn-tl__d">Día 1</span><span class="lbn-tl__x">Piel suave y sin tirantez.</span></li>
+      <li><span class="lbn-tl__d">Semana 2</span><span class="lbn-tl__x">Más elástica y luminosa.</span></li>
+      <li class="is-meta"><span class="lbn-tl__d">Semana 4–8</span><span class="lbn-tl__x">Las estrías se ven menos.</span></li>
+    </ol>
+    <p class="lbn-tl__n">La constancia es la clave: con 2 cremas sostenés el ritual diario sin cortar.</p>
+  </div>
+  {%- endif -%}
+  {%- if product.handle == 'ultrabalance5-serum' -%}
+  <div class="lbn-tl">
+    <p class="lbn-tl__t">Qué notás y cuándo</p>
+    <ol class="lbn-tl__row">
+      <li><span class="lbn-tl__d">Semana 1</span><span class="lbn-tl__x">Menos brillo durante el día.</span></li>
+      <li><span class="lbn-tl__d">Semana 3–4</span><span class="lbn-tl__x">Poros más afinados y menos rojeces.</span></li>
+      <li class="is-meta"><span class="lbn-tl__d">Día 60</span><span class="lbn-tl__x">Piel más equilibrada, con menos imperfecciones nuevas.</span></li>
+    </ol>
+    <p class="lbn-tl__n">1 unidad rinde unos 30 días. La piel se renueva más o menos una vez por mes: con el 2×1 cubrís dos ciclos completos, que es cuando se ve el cambio.</p>
+  </div>
+  {%- endif -%}
+  {%- if nota_txt != blank -%}<p class="lbn-bundle__nota">{{ nota_txt }}</p>{%- endif -%}
+</div>
+<script>
+/* Posicion unificada: el selector siempre va ARRIBA de Cantidad + Agregar al carrito,
+   como en el Kit Reafirmante. Si el template lo tiene abajo del boton, se mueve aca
+   mismo (antes de pintar), sin tocar el JSON del template. */
+(function(){
+  var root=document.getElementById('lbn-bundle');if(!root)return;
+  /* 7-oct — la línea de cuotas va pegada debajo del precio de la ficha */
+  var cqp=root.querySelector('.lbn-cq-pdp'),info=root.closest('.product__info-container')||document,pr=info.querySelector('[id^="price-"]');
+  if(cqp&&pr&&pr.parentElement){pr.insertAdjacentElement('afterend',cqp);}
+  var box=root.parentElement;if(!box)return;
+  var anchor=box.querySelector(':scope > .product-form__quantity');
+  if(!anchor){var pf=box.querySelector('product-form');if(pf){anchor=pf;while(anchor.parentElement&&anchor.parentElement!==box){anchor=anchor.parentElement;}}}
+  if(anchor&&anchor.parentElement===box&&(root.compareDocumentPosition(anchor)&Node.DOCUMENT_POSITION_PRECEDING)){box.insertBefore(root,anchor);}
+})();
+document.addEventListener("DOMContentLoaded",function(){
+  var root=document.getElementById('lbn-bundle');
+  if(!root)return;
+  var PRE={{ pre }};
+
+  /* 18-sep — el bloque "Cantidad" del tema se saco de la ficha: la cantidad la fija
+     el selector. Si no hay input[name=quantity] en el form, se crea uno oculto;
+     sin esto entraria siempre 1 unidad al carrito. */
+  /* OJO: la ficha tiene DOS forms con action /cart/add en la columna de compra, y
+     Dawn manda el que esta adentro de <product-form>. Si el input oculto va a uno
+     solo, entra 1 unidad. Por eso se le pone a todos. */
+  function forms(){
+    var l=[].slice.call(document.querySelectorAll('.product__info-container form[action*="/cart/add"]'));
+    if(!l.length)l=[].slice.call(document.querySelectorAll('form[action*="/cart/add"]'));
+    return l;
+  }
+  function qtyInputs(){
+    return forms().map(function(form){
+      var i=form.querySelector('input[name="quantity"]');
+      if(!i){i=document.createElement('input');i.type='hidden';i.name='quantity';i.value='1';form.appendChild(i);}
+      return i;
+    });
+  }
+
+  function boton(){return document.querySelector('.product__info-container .product-form__submit');}
+
+  function setActive(opt){root.querySelectorAll('.lbn-bundle__opt').forEach(function(o){o.classList.remove('is-active');});opt.classList.add('is-active');}
+  function setQty(v){qtyInputs().forEach(function(i){i.value=v;});}
+  function setLabel(precio){
+    var b=boton();
+    if(!b||b.disabled||!precio)return;   /* agotado: no le pisamos el "Agotado" del tema */
+    var s=b.querySelector('span')||b;
+    var txt={{ cta_txt | json }}+' · '+precio;
+    if(s.textContent.trim()!==txt)s.textContent=txt;
+  }
+  function aplicar(opt){
+    setActive(opt);
+    setQty(parseInt(opt.dataset.qty,10));
+    setLabel(opt.dataset.pay);
+    /* 7-oct — cuotas de la opción elegida, debajo del precio */
+    var cqp=document.querySelector('.lbn-cq-pdp');
+    if(cqp&&opt.dataset.cents){cqp.setAttribute('data-amount',Math.round(opt.dataset.cents));if(window.LBNCuotas)LBNCuotas.pintar(cqp);}
+  }
+
+  root.querySelectorAll('input[type="radio"]').forEach(function(r){
+    r.addEventListener('change',function(){aplicar(this.closest('.lbn-bundle__opt'));});
+  });
+
+  /* 21-sep — COMBO: el form del tema manda UNA variante. Con el combo activo se
+     reemplaza lo que viaja a /cart/add por dos lineas (items[]) en el evento
+     "formdata", que dispara cuando product-form.js arma el FormData. Asi el alta
+     sigue el camino normal del tema: bloqueo de doble click (aria-disabled),
+     secciones del carrito, cajon que se abre y mensajes de error. */
+  forms().forEach(function(form){
+    form.addEventListener('formdata',function(e){
+      var act=root.querySelector('.lbn-bundle__opt.is-active');
+      if(!act)return;
+      var fd=e.formData;
+      /* 4-oct — oferta con kit: data-items="variante:cant,variante:cant" */
+      if(act.dataset.items){
+        fd.delete('id');fd.delete('quantity');
+        act.dataset.items.split(',').forEach(function(p,k){
+          var x=p.split(':');
+          fd.append('items['+k+'][id]',x[0]);fd.append('items['+k+'][quantity]',x[1]);
+        });
+        return;
+      }
+      if(act.dataset.combo!=='1')return;
+      fd.delete('id');fd.delete('quantity');
+      fd.append('items[0][id]',act.dataset.main);fd.append('items[0][quantity]','2');
+      fd.append('items[1][id]',act.dataset.add);fd.append('items[1][quantity]','1');
+    });
+  });
+
+  var inicial=root.querySelector('.lbn-bundle__opt[data-qty="'+PRE+'"]:not([data-combo])')||root.querySelector('.lbn-bundle__opt');
+  if(inicial)aplicar(inicial);
+
+  /* el tema repinta el boton al cambiar de variante: volvemos a poner el precio */
+  var b=boton();
+  if(b&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var act=root.querySelector('.lbn-bundle__opt.is-active');
+      if(act)setLabel(act.dataset.pay);
+    });
+    mo.observe(b,{childList:true,subtree:true,characterData:true});
+  }
+});
+</script>

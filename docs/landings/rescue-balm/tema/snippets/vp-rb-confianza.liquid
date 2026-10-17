@@ -1,0 +1,14 @@
+{%- comment -%} VP-RB · confianza debajo del botón (17-10-2026, C11). {%- endcomment -%}
+{%- assign fst = settings.free_shipping_threshold | times: 100 -%}
+<ul class="vprb-tr">
+  <li><b>Envío a todo el país</b><span>2 a 5 días hábiles{% if fst > 0 %} · gratis desde {{ fst | money_without_trailing_zeros }}{% endif %}</span></li>
+  <li><b>Cambios dentro de 7 días</b><span>Sin uso y en su empaque</span></li>
+  <li><b>Pago seguro</b><span>{% render 'lbn-cuotas', estilo: 'resumen' %}</span></li>
+  <li><b>Fabricado en Argentina</b><span>Laboratorio propio · vegano</span></li>
+</ul>
+<style>
+  .vprb-tr{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e3dfd3;border:1px solid #e3dfd3;border-radius:8px;overflow:hidden;font-family:'Plus Jakarta Sans','Inter',sans-serif}
+  .vprb-tr li{background:#fbfaf6;padding:12px;display:flex;flex-direction:column;gap:3px}
+  .vprb-tr b{font-size:12.5px;color:#1d3c34}
+  .vprb-tr span{font-size:11.5px;line-height:1.35;color:#6c726c}
+</style>

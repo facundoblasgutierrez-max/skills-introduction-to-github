@@ -1,0 +1,368 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "custom_liquid_VFCJMJ": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'lbn-bundle-uni', tiers: 3, subtitulos: '|Uno en casa, uno en la mochila|Se te acaba antes de lo que creés' %}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "custom_liquid_socialproof": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'lbn-social-proof', brand_line: 'Patagonia argentina', brand_flag: '🇦🇷' %}"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "custom_liquid_socialproof",
+        "title",
+        "price",
+        "variant_picker",
+        "custom_liquid_VFCJMJ",
+        "buy_buttons",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-1",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "mobile_thumbnails": "show",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 28,
+        "padding_bottom": 12
+      }
+    },
+    "lbn_geo": {
+      "type": "lbn-pdp-geo",
+      "settings": {}
+    },
+    "vpb_hook": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-hook' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_benefits": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-benefits' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_terreno": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-terreno' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_zonas": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-zonas' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_beforeafter": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-beforeafter' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_mecanismo": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-mecanismo' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_origen": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-origen' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_compare": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-compare' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_ingredient": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-ingrediente' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_howto": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-howto' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "vpb_garantia": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'vpb-garantia' %}",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "collapsible_content_rEq7CH": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_unisex": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Es un producto solo para mujeres?",
+            "icon": "none",
+            "row_content": "<p>No. Es un bálsamo multiuso para piel castigada por el clima, sin distinción: labios, nudillos, codos, talones y puntas secas. Lo usa igual quien esquía, quien maneja en la ruta, quien trabaja con las manos o quien simplemente atraviesa el invierno.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_zonas": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Sirve para talones y codos o solo para labios y manos?",
+            "icon": "none",
+            "row_content": "<p>Sirve para las cuatro zonas. En talones y codos es donde más se nota, porque son piel gruesa donde la crema liviana se absorbe y a los diez minutos no queda nada. Aplicá una capa generosa de noche y, en el caso de los talones, dormí con la media puesta.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_eCkcWd": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Qué marcas puedo encontrar en La Beautyneta?",
+            "icon": "none",
+            "row_content": "<p>En La Beautyneta trabajamos con nuestras propias marcas de laboratorio como <strong>Vegaplay</strong> (rituales naturales desde la Patagonia) y <strong>Beautycaster</strong> (tecnología cosmética de alto impacto). También sumamos ediciones limitadas y productos exclusivos.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_GdWMHd": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Vegaplay es natural y cruelty-free?",
+            "icon": "none",
+            "row_content": "<p>Sí. Vegaplay está formulada con ingredientes botánicos, es libre de crueldad animal y se inspira en el cuidado consciente de la piel y el planeta.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_gne97j": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Qué diferencia a Beautycaster de otras marcas?",
+            "icon": "none",
+            "row_content": "<p>Beautycaster combina ciencia de laboratorio con accesibilidad. Nuestros productos tienen activos de alta eficacia, texturas innovadoras y resultados visibles.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_ye3MTB": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Hacen envíos a todo el país?",
+            "icon": "none",
+            "row_content": "<p>Sí, enviamos a toda Argentina. Trabajamos con correos confiables y tenés seguimiento en todo momento.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_DDbDHQ": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Cuánto tarda en llegar mi pedido?",
+            "icon": "none",
+            "row_content": "<p>El tiempo de entrega varía según tu ubicación, pero normalmente tarda entre 2 y 5 días hábiles.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_jeYUzH": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Qué medios de pago aceptan?",
+            "icon": "none",
+            "row_content": "<p>Podés pagar con tarjetas de crédito, débito, transferencia o a través de plataformas como Mercado Pago. 2 cuotas sin interés en toda la tienda, 3 desde $50.000 y 6 desde $100.000.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_cKb4hd": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Puedo cambiar o devolver un producto?",
+            "icon": "none",
+            "row_content": "<p>Aceptamos cambios en productos sin uso y en su empaque original. Para más info, escribinos dentro de los 7 días de recibida tu compra.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_94y8cc": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "¿Los productos están aprobados por ANMAT?",
+            "icon": "none",
+            "row_content": "<p>Sí, todos nuestros productos están registrados y habilitados por ANMAT, cumpliendo con las normativas de seguridad y calidad exigidas en Argentina.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_unisex",
+        "collapsible_row_zonas",
+        "collapsible_row_eCkcWd",
+        "collapsible_row_GdWMHd",
+        "collapsible_row_gne97j",
+        "collapsible_row_ye3MTB",
+        "collapsible_row_DDbDHQ",
+        "collapsible_row_jeYUzH",
+        "collapsible_row_cKb4hd",
+        "collapsible_row_94y8cc"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Preguntas frecuentes",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "related-products": {
+      "type": "lbn-rutina",
+      "settings": {}
+    },
+    "1746057007b67f5373": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_U9Nkgp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_U9Nkgp"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "lbn_backto_closer": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "{% render 'mil-backto' %}",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "main",
+    "lbn_geo",
+    "vpb_hook",
+    "vpb_benefits",
+    "vpb_terreno",
+    "vpb_zonas",
+    "vpb_beforeafter",
+    "vpb_mecanismo",
+    "vpb_origen",
+    "vpb_compare",
+    "vpb_ingredient",
+    "vpb_howto",
+    "vpb_garantia",
+    "collapsible_content_rEq7CH",
+    "related-products",
+    "1746057007b67f5373",
+    "lbn_backto_closer"
+  ]
+}
