@@ -1,14 +1,65 @@
-{%- comment -%} VP-RB · confianza debajo del botón (17-10-2026, C11). {%- endcomment -%}
+{%- comment -%} VP-RB · debajo del botón (17-10-2026, C11 v3). Igual que Frøya: tres líneas de confianza, el aviso de stock (real, del inventario) y los desplegables «¿en qué piel funciona? / resultados / cómo se usa / ingredientes». Donde Frøya pone el clima de Noruega, nosotros la Patagonia; donde pone «despachamos desde Florida», nosotros Argentina. {%- endcomment -%}
 {%- assign fst = settings.free_shipping_threshold | times: 100 -%}
+{%- assign v = product.selected_or_first_available_variant -%}
 <ul class="vprb-tr">
-  <li><b>Envío a todo el país</b><span>2 a 5 días hábiles{% if fst > 0 %} · gratis desde {{ fst | money_without_trailing_zeros }}{% endif %}</span></li>
+  <li><b><svg class="vprb-tr__f" viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>Sale desde Argentina</b><span>Llega en 2 a 5 días hábiles{% if fst > 0 %} · gratis desde {{ fst | money_without_trailing_zeros }}{% endif %}</span></li>
   <li><b>Cambios dentro de 7 días</b><span>Sin uso y en su empaque</span></li>
   <li><b>Pago seguro</b><span>{% render 'lbn-cuotas', estilo: 'resumen' %}</span></li>
-  <li><b>Fabricado en Argentina</b><span>Laboratorio propio · vegano</span></li>
+  <li><b>Hecho en Argentina</b><span>Laboratorio propio · vegano</span></li>
 </ul>
+{%- if v.inventory_management == 'shopify' and v.inventory_quantity > 0 and v.inventory_quantity <= 30 -%}
+  <p class="vprb-stock"><span aria-hidden="true">🔥</span> Pocas unidades: quedan {{ v.inventory_quantity }}</p>
+{%- endif -%}
+<div class="vprb-ac">
+  <details><summary>¿En qué piel funciona?</summary>
+    <p>Lo pensamos para la piel que vive en clima duro. En la Patagonia el viento pasa los 100 km/h, el invierno baja de cero y el aire es seco todo el año: ahí la piel se pone tirante y se marca. Por eso es un bálsamo sin agua, que nutre y sella.</p>
+    <p>Es ideal para piel seca, madura o sensible. En piel grasa o con granitos, mejor sólo en las zonas secas.</p>
+  </details>
+  <details><summary>¿Qué resultados puedo esperar?</summary>
+    <p>La primera noche, la piel amanece suave y sin tirantez. A las dos semanas se ve más luminosa y pareja. Entre la semana 4 y la 8, las líneas por sequedad se ven más suaves. Cada piel es distinta: la clave es usarlo todas las noches.</p>
+  </details>
+  <details><summary>¿Cómo se usa?</summary>
+    <p>Como no tiene agua, rinde muchísimo: alcanza con una lenteja. De noche, con la cara limpia, calentala entre los dedos y presionala sobre rostro, cuello y escote. Si usás sérum, el bálsamo va encima.</p>
+  </details>
+  <details><summary>Ingredientes</summary>
+    <p class="vprb-ac__lg"><span class="o-pat">Patagónico</span><span class="o-veg">Vegetal</span><span class="o-nat">Natural</span></p>
+    <ul class="vprb-ac__inci">
+      <li><span class="o-veg"></span>Manteca de karité</li>
+      <li><span class="o-veg"></span>Aceite de oliva</li>
+      <li><span class="o-veg"></span>Aceite de jojoba</li>
+      <li><span class="o-veg"></span>Aceite de girasol</li>
+      <li><span class="o-veg"></span>Aceite de coco</li>
+      <li><span class="o-veg"></span>Cera de carnauba</li>
+      <li><span class="o-veg"></span>Cera de candelilla</li>
+      <li><span class="o-pat"></span>Aceite de caléndula de la Patagonia</li>
+      <li><span class="o-nat"></span>Vitamina E</li>
+      <li><span class="o-veg"></span>Extracto de aloe vera</li>
+      <li><span class="o-veg"></span>Oliva emulsionante (sorbitan olivate)</li>
+      <li><span class="o-nat"></span>Aceite esencial de eucalipto</li>
+      <li><span class="o-nat"></span>Aceite esencial de lavanda</li>
+    </ul>
+  </details>
+</div>
 <style>
   .vprb-tr{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e3dfd3;border:1px solid #e3dfd3;border-radius:8px;overflow:hidden;font-family:'Plus Jakarta Sans','Inter',sans-serif}
   .vprb-tr li{background:#fbfaf6;padding:12px;display:flex;flex-direction:column;gap:3px}
-  .vprb-tr b{font-size:12.5px;color:#1d3c34}
+  .vprb-tr b{font-size:12.5px;color:#1d3c34;display:flex;align-items:center;gap:6px}
   .vprb-tr span{font-size:11.5px;line-height:1.35;color:#6c726c}
+  .vprb-tr__f{width:15px;height:10px;border-radius:2px;flex:0 0 15px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+  .vprb-stock{margin:12px 0 0;font-family:'Plus Jakarta Sans','Inter',sans-serif;font-size:13px;font-weight:700;color:#8a5a37}
+  .vprb-ac{margin:16px 0 0;border-top:1px solid #d9d3c4;font-family:'Plus Jakarta Sans','Inter',sans-serif;color:#26302c}
+  .vprb-ac details{border-bottom:1px solid #d9d3c4}
+  .vprb-ac summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:50px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1d3c34}
+  .vprb-ac summary::-webkit-details-marker{display:none}
+  .vprb-ac summary:after{content:'+';font-size:20px;font-weight:400;color:#ad7c59}
+  .vprb-ac details[open] summary:after{content:'–'}
+  .vprb-ac p{font-size:14.5px;line-height:1.6;margin:0 0 12px}
+  .vprb-ac__lg{display:flex;gap:14px;flex-wrap:wrap}
+  .vprb-ac__lg span,.vprb-ac__inci li{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600}
+  .vprb-ac__lg span:before,.vprb-ac__inci span{content:"";width:10px;height:10px;border-radius:50%;flex:0 0 10px;display:inline-block}
+  .vprb-ac__inci{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:7px}
+  .vprb-ac__inci li{font-size:13.5px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+  .vprb-ac .o-pat:before,.vprb-ac__inci .o-pat{background:#ad7c59}
+  .vprb-ac .o-veg:before,.vprb-ac__inci .o-veg{background:#74a496}
+  .vprb-ac .o-nat:before,.vprb-ac__inci .o-nat{background:#1d3c34}
 </style>

@@ -169,3 +169,23 @@ reemplazan a las de la marca.
   - SEO;
   - revisar en vivo a 375 px.
 - **Después:** batch de creativos para Meta con los 5 ángulos (skill `creative-diversification`).
+
+## 9 · v3 (17-10, tarde): estructura Frøya + Patagonia
+
+Pedido de Facu: copiar la estructura de la ficha de Frøya y ganarle a Tala con la estética
+VegaPlay y la Patagonia como diferencial, sin fundadora. El detalle sección por sección y la tabla
+de precio por gramo están en `ANALISIS-COMPETENCIA.md` (§6 y §7).
+
+Archivos que cambiaron en el tema `188277588219` (md5 verificado contra el repo):
+
+- `vp-rb-intro`: etiqueta «30 ml · Cero agua · Rinde unas 60 noches» sobre el título.
+- `vp-rb-promesa`: subtítulo botánico, 3 ✓ y 4 chips.
+- `vp-rb-confianza`: «Sale desde Argentina», stock real del inventario y 4 desplegables.
+- `vp-rb-landing`: 15 secciones en orden Frøya.
+- `vp-rb-css2` (nuevo): estilos de las secciones nuevas.
+
+Foto nueva: `vp-rb-lp-calendula.png` (frasco entre caléndulas, Fitz Roy de fondo).
+
+El bloque «laboratorio» se fundió en «La Patagonia hace el producto» (punto 03, «Hecho en
+Argentina»).
+

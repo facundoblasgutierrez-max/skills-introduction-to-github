@@ -1,0 +1,57 @@
+{%- comment -%} VP-RB · estilos de las secciones v3 (estructura Frøya, 17-10-2026, C11). Complementa vp-rb-css; se renderiza desde vp-rb-landing. {%- endcomment -%}
+<style>
+/* reseñas con etiquetas de beneficio */
+.vprb-rv__tags{display:flex;flex-wrap:wrap;gap:5px;margin:0}
+.vprb-rv__tags span{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:#e5ede8;border-radius:999px;padding:4px 8px}
+/* sellos argentinos */
+.vprb-sellos{background:var(--paper);border-block:1px solid var(--line);padding-block:34px}
+.vprb-sellos__t{font-family:'Lora',Georgia,serif;font-style:italic;font-size:clamp(20px,5vw,26px);line-height:1.3;color:var(--ink);text-align:center;margin:0 auto 22px;max-width:30ch}
+.vprb-sellos__l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vprb-sello{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.vprb-sello i{width:58px;height:58px;border-radius:50%;border:1.5px dashed var(--cu);display:flex;align-items:center;justify-content:center;font-style:normal}
+.vprb-sello svg:not(.vprb-flag){width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.vprb-sello i .vprb-flag{width:28px;height:19px;margin:0;flex:0 0 28px}
+.vprb-sello b{font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.2}
+@media(min-width:750px){.vprb-sellos__l{grid-template-columns:repeat(6,1fr)}}
+/* resultados que podés esperar */
+.vprb-res__l{list-style:none;margin:0 0 30px;padding:0;display:grid;gap:12px}
+.vprb-res__l li{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px}
+.vprb-res__n{font-size:40px;line-height:1;color:var(--cu);text-align:center}
+.vprb-res__n small{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-top:6px}
+.vprb-res__l p{margin:0;font-size:15px;line-height:1.5}
+.vprb-res__l p b{color:var(--ink)}
+@media(min-width:750px){.vprb-res__l{grid-template-columns:repeat(3,1fr)}.vprb-res__l li{grid-template-columns:1fr;text-align:center}}
+/* la Patagonia hace el producto */
+.vprb-pat{background:#16302a;color:#e9e6dc}
+.vprb-pat__img{border-radius:6px;overflow:hidden;aspect-ratio:4/5;margin:0 0 28px}
+.vprb-pat__img img{width:100%;height:100%;object-fit:cover}
+.vprb-pat__p{font-size:clamp(16px,4.2vw,18px);line-height:1.6;color:#d6dbd3;margin:0 0 26px;max-width:58ch}
+.vprb-pat__l{list-style:none;margin:0;padding:0;display:grid}
+.vprb-pat__l li{display:flex;gap:16px;padding:20px 0;border-top:1px solid rgba(233,230,220,.22)}
+.vprb-pat__l li:last-child{border-bottom:1px solid rgba(233,230,220,.22)}
+.vprb-pat__l span{font-weight:700;font-size:13px;letter-spacing:.14em;color:#d9b392;padding-top:5px}
+.vprb-pat__l b{display:block;font-weight:500;font-size:21px;color:#f3f1ea;margin:0 0 6px}
+.vprb-pat__l p{margin:0;font-size:15px;line-height:1.5;color:#c9cfc6}
+@media(min-width:750px){.vprb-pat .vprb-w{display:grid;grid-template-columns:5fr 6fr;column-gap:56px;align-items:start}.vprb-pat__img{grid-row:1/span 6;margin:0}.vprb-pat .vprb-w>*:not(.vprb-pat__img){grid-column:2}.vprb-pat .vprb-cta{margin-left:0}}
+/* cómo funcionan los ingredientes */
+.vprb-ib{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.vprb-ib li{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.vprb-ib small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cu);margin:0 0 6px}
+.vprb-ib b{display:block;font-weight:500;font-size:21px;color:var(--ink);margin:0 0 6px}
+.vprb-ib p{margin:0;font-size:14.5px;line-height:1.5}
+.vprb-ib .o{display:inline-block;margin-left:6px;vertical-align:2px;font-family:'Plus Jakarta Sans',sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:#f1e6dc;color:#8a5a37}
+@media(min-width:750px){.vprb-ib{grid-template-columns:1fr 1fr}}
+/* garantía grande */
+.vprb-gt{background:var(--paper)}
+.vprb-gt__box{border:1.5px solid var(--ink);border-radius:10px;padding:28px 22px;text-align:center;max-width:720px;margin:0 auto}
+.vprb-gt__box p{font-size:15.5px;line-height:1.6;margin:0 auto;max-width:52ch}
+.vprb-gt__box .vprb-eye{font-size:11px;margin:0 0 12px}
+.vprb-gt__box .vprb-gt__big{font-size:clamp(28px,7vw,40px);line-height:1.1;color:var(--ink);margin:0 0 12px}
+.vprb-gt__l{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left}
+.vprb-gt__l li{font-size:13.5px;line-height:1.4;padding:12px;border-radius:6px;background:var(--bg)}
+.vprb-gt__l b{display:block;color:var(--ink);font-size:14px}
+/* cierre */
+.vprb-fin{background:#16302a;color:#e9e6dc;text-align:center;padding-block:56px 64px}
+.vprb-fin p{font-family:'Lora',Georgia,serif;font-style:italic;font-size:clamp(19px,4.8vw,24px);line-height:1.5;margin:0 auto;max-width:34ch;color:#e6d2bf}
+.vprb-fin .vprb-org__k{justify-content:center;margin-top:22px}
+</style>

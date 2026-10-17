@@ -1,8 +1,9 @@
-{%- comment -%} VP-RB · arriba del título (17-10-2026, C11). Marca + origen + valoración real de VegaPlay (Judge.me). Además, sólo en esta plantilla: tipografía VegaPlay (el tema fuerza su serif en h1-h5 e Inter en el texto con !important), selector de packs y barra fija en la paleta VegaPlay. Mismas reglas que vp-cc-intro (C10). {%- endcomment -%}
+{%- comment -%} VP-RB · arriba del título (17-10-2026, C11 v3: estructura Frøya). Marca + origen + valoración real de VegaPlay (Judge.me) + la etiqueta de tamaño/rendimiento que Frøya pone sobre el título. Además, sólo en esta plantilla: tipografía VegaPlay (el tema fuerza su serif en h1-h5 e Inter en el texto con !important), selector de packs y barra fija en la paleta VegaPlay. Mismas reglas que vp-cc-intro (C10). {%- endcomment -%}
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <div class="vprb-intro">
-  <p class="vprb-intro__brand"><svg viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>VegaPlay · Patagonia argentina</p>
+  <p class="vprb-intro__brand"><svg viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>VegaPlay · De la Patagonia argentina</p>
   <a class="vprb-intro__rate" href="#vprb-resenas"><span aria-hidden="true">★★★★★</span><b>4,8</b><span>reseñas de clientas VegaPlay</span></a>
+  <p class="vprb-intro__tag">30 ml · Cero agua · Rinde unas 60 noches</p>
 </div>
 <style>
   .vprb-intro{font-family:'Plus Jakarta Sans','Inter',sans-serif;color:#1d3c34;margin:0 0 6px}
@@ -11,6 +12,7 @@
   .vprb-intro__rate{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#1d3c34;text-decoration:none}
   .vprb-intro__rate span:first-child{color:#ad7c59;letter-spacing:1px}
   .vprb-intro__rate span:last-child{text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c3b3}
+  .vprb-intro__tag{margin:12px 0 0;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#6c726c}
   body:has(.vprb-intro) .product__title h1,body:has(.vprb-intro) .product__title h2{font-family:'Lora',Georgia,serif !important;font-weight:500 !important;color:#1d3c34;letter-spacing:-.01em;line-height:1.08}
   body:has(.vprb-intro) .lbn-bundle__opt.is-active{background:#e5ede8 !important;border-color:#1d3c34 !important;box-shadow:4px 4px 0 rgba(29,60,52,.14) !important}
   body:has(.vprb-intro) .lbn-bundle__badge,body:has(.vprb-intro) .lbn-bundle__badge--soft,body:has(.vprb-intro) .lbn-bundle__cqs{background:#1d3c34 !important;border-color:#1d3c34 !important;color:#f3f1ea !important}
@@ -20,8 +22,8 @@
   body:has(.vprb-intro) #lbn-sticky{background:#16302a !important}
   body:has(.vprb-intro) #lbn-sticky button{background:#f3f1ea !important;color:#1d3c34 !important;border-color:#f3f1ea !important}
   .vprb h2,.vprb .vprb-h2,.vprb-org h2{font-family:'Lora',Georgia,serif !important;font-weight:500 !important}
-  .vprb,.vprb p,.vprb li,.vprb span,.vprb a,.vprb summary,.vprb figcaption,.vprb button,.vprb-pr,.vprb-pr p,.vprb-pr li,.vprb-tr,.vprb-tr b,.vprb-tr span,.vprb-intro,.vprb-intro p,.vprb-intro a,.vprb-intro span{font-family:'Plus Jakarta Sans','Inter',sans-serif !important}
-  .vprb .vprb-rit__l span,.vprb .vprb-zonas b,.vprb .vprb-ing__l b,.vprb .vprb-lab__l b,.vprb .vprb-gar__l b,.vprb .vprb-off__l b,.vprb .vprb-rv blockquote{font-family:'Lora',Georgia,serif !important}
-  .vprb,.vprb-pr,.vprb-tr,.vprb-intro{letter-spacing:0}
+  .vprb,.vprb p,.vprb li,.vprb span,.vprb a,.vprb summary,.vprb figcaption,.vprb button,.vprb-pr,.vprb-pr p,.vprb-pr li,.vprb-tr,.vprb-tr b,.vprb-tr span,.vprb-ac,.vprb-ac p,.vprb-ac li,.vprb-ac summary,.vprb-ac span,.vprb-intro,.vprb-intro p,.vprb-intro a,.vprb-intro span{font-family:'Plus Jakarta Sans','Inter',sans-serif !important}
+  .vprb .vprb-rit__l span,.vprb .vprb-zonas b,.vprb .vprb-ing__l b,.vprb .vprb-lab__l b,.vprb .vprb-gar__l b,.vprb .vprb-off__l b,.vprb .vprb-rv blockquote,.vprb .vprb-res__n,.vprb .vprb-pat__l b,.vprb .vprb-ib b,.vprb .vprb-gt__big,.vprb .vprb-sello b,.vprb .vprb-sellos__t,.vprb .vprb-fin p,.vprb-pr .vprb-pr__sub2{font-family:'Lora',Georgia,serif !important}
+  .vprb,.vprb-pr,.vprb-tr,.vprb-intro,.vprb-ac{letter-spacing:0}
   #lbn-bundle{scroll-margin-top:110px}
 </style>

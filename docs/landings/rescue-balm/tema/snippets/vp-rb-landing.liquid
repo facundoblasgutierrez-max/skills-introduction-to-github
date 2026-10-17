@@ -1,0 +1,296 @@
+{%- comment -%}
+  VP-RB · Landing Patagonia Rescue Balm VegaPlay (17-10-2026, tarjeta C11 · v3).
+  v3, pedido de Facu: copiar la ESTRUCTURA de la ficha de Frøya (que Tala ya copió) y ganarle con la
+  estética VegaPlay y la Patagonia. Donde Frøya cuenta Noruega / vikingos y Tala a su fundadora, acá
+  la protagonista es la Patagonia: clima extremo, caléndula patagónica, Patagonia PureTrack™ y el sello
+  argentino. Orden Frøya: reseñas → sellos/prensa → resultados → un solo paso → qué nos hace distintos →
+  cómo funcionan los ingredientes → garantía → preguntas largas → cierre. Sumamos lo que ya vendía:
+  problema 45+, cero agua, comparativa, 2×1 madre e hija y la oferta.
+  Claims cosméticos y honestos: sin porcentajes clínicos inventados. Antes/después con IA: «Imagen
+  ilustrativa». Reseñas: sólo reales (Judge.me).
+  Precios (Facu, 17-10): 1 = $33.900, tachado $52.884 · 2×1 = 2 por $52.884 · 3 = 25% OFF.
+{%- endcomment -%}
+{%- liquid
+  assign f = 'https://cdn.shopify.com/s/files/1/0754/6834/1499/files/'
+  assign p1 = product.price
+  assign w1 = product.compare_at_price | default: product.price
+  if w1 < p1
+    assign w1 = p1
+  endif
+  assign off2 = p1 | times: 0.44 | round
+  assign p2 = p1 | times: 2 | minus: off2
+  assign w2 = w1 | times: 2
+  assign p3 = p1 | times: 3 | times: 0.75 | round
+  assign w3 = w1 | times: 3
+  assign fst = settings.free_shipping_threshold | times: 100
+-%}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+{% render 'vp-rb-css' %}
+{% render 'vp-rb-css2' %}
+{%- capture flag -%}<svg class="vprb-flag" viewBox="0 0 9 6" aria-hidden="true"><rect width="9" height="6" fill="#74acdf"/><rect y="2" width="9" height="2" fill="#fff"/><circle cx="4.5" cy="3" r=".55" fill="#f6b40e"/></svg>{%- endcapture -%}
+
+<div class="vprb">
+
+  {%- comment -%} 1 · Sellos {%- endcomment -%}
+  <div class="vprb-strip" aria-label="Por qué VegaPlay">
+    <div class="vprb-strip__in">
+      <span>{{ flag }}Hecho en Argentina</span>
+      <span>Patagonia PureTrack™</span>
+      <span>Cero agua · 100% activos</span>
+      <span>Vegano · sin parabenos</span>
+    </div>
+  </div>
+
+  {%- comment -%} 2 · Reseñas reales (Frøya abre con el muro de reseñas) {%- endcomment -%}
+  <section class="vprb-sec vprb-rev" id="vprb-resenas">
+    <div class="vprb-w">
+      <p class="vprb-eye">Lo que dicen nuestras clientas</p>
+      <h2 class="vprb-h2">Las que prueban VegaPlay, <em>vuelven</em></h2>
+      <p class="vprb-rev__score"><span class="vprb-stars" aria-hidden="true">★★★★★</span> <b>4,8 de 5</b> · reseñas verificadas de clientas VegaPlay</p>
+      <div class="vprb-rev__scr">
+        {%- capture revs -%}Muy buenos productos, me encantaron!~Natalia~Compró el Patagonia Rescue Balm~Le encantó^Me hidrata la piel y no me la deja grasosa, además tiene muy rico perfume.~Fabi P.~Compró el Serum Facial Día~Hidrata,No engrasa^Muy bueno. Ya es la segunda vez que compro.~Silvina~Compró la Crema Facial de Noche~Volvió a comprar^Me gusta mucho cómo me viene dejando la piel.~Agustina~Compró el Serum de Mar~Piel más linda^Amo el aroma a naturaleza.~Macarena Y.~Compró el Gel de Ducha~Aroma natural^Amo la Patagonia encima, me dejó el pelo divino.~Marianela~Compró la rutina capilar~Pelo divino{%- endcapture -%}
+        {%- assign rl = revs | split: '^' -%}
+        {%- for r in rl -%}{%- assign x = r | split: '~' -%}{%- assign tg = x[3] | split: ',' -%}
+        <figure class="vprb-rv"><div class="vprb-rv__tags">{% for t in tg %}<span>{{ t }}</span>{% endfor %}</div><span class="vprb-stars" aria-hidden="true">★★★★★</span><blockquote>«{{ x[0] }}»</blockquote><figcaption><b>{{ x[1] }}</b>{{ x[2] }}</figcaption></figure>
+        {%- endfor -%}
+      </div>
+      <p class="vprb-hint">Deslizá para ver más →</p>
+    </div>
+  </section>
+
+  {%- comment -%} 3 · Sello argentino (donde Frøya pone citas de prensa) {%- endcomment -%}
+  <section class="vprb-sellos">
+    <div class="vprb-w">
+      <p class="vprb-sellos__t">Lo mejor de la Patagonia, hecho en Argentina. No hace falta importarlo.</p>
+      <ul class="vprb-sellos__l">
+        <li class="vprb-sello"><i>{{ flag }}</i><b>Hecho en Argentina</b></li>
+        <li class="vprb-sello"><i><svg viewBox="0 0 24 24"><path d="M3 19l6-10 4 6 3-4 5 8z"/><path d="M8 11l1-2 1.5 2"/></svg></i><b>Origen Patagonia</b></li>
+        <li class="vprb-sello"><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg></i><b>Caléndula patagónica</b></li>
+        <li class="vprb-sello"><i><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></i><b>PureTrack™ rastreable</b></li>
+        <li class="vprb-sello"><i><svg viewBox="0 0 24 24"><path d="M5 19c0-8 6-14 15-14-1 9-6 15-14 15"/><path d="M5 19l7-7"/></svg></i><b>Vegano</b></li>
+        <li class="vprb-sello"><i><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></i><b>Cruelty free</b></li>
+      </ul>
+    </div>
+  </section>
+
+  {%- comment -%} 4 · Problema: piel madura y seca {%- endcomment -%}
+  <section class="vprb-sec vprb-prob">
+    <div class="vprb-w">
+      <p class="vprb-eye">Después de los 45</p>
+      <h2 class="vprb-h2">Las arrugas se marcan más cuando la piel <em>se queda sin aceites</em>.</h2>
+      <div class="vprb-prob__img"><img src="{{ f }}vp-rb-lp-problema-madura.png?width=1000" alt="Piel madura con líneas marcadas, opaca y tirante por sequedad" loading="lazy" width="1000" height="1000"></div>
+      <p class="vprb-lead">Con los años, y sobre todo con la menopausia, la piel fabrica cada vez menos grasa propia. Pierde agua, se pone opaca y tirante, y las líneas se ven más profundas. No es sólo la edad: es sequedad. Y una crema común es casi toda agua: se evapora antes de resolverla.</p>
+      <ul class="vprb-zonas">
+        <li><span class="vprb-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8c3 2 5 2 8 0s5-2 8 0M4 13c3 2 5 2 8 0s5-2 8 0M4 18c3 2 5 2 8 0s5-2 8 0"/></svg></span><div><b>Líneas y arrugas que se marcan</b><p>Patas de gallo, entrecejo y alrededor de la boca. Con la piel nutrida se ven más suaves.</p></div></li>
+        <li><span class="vprb-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><div><b>Piel opaca, sin brillo</b><p>Los aceites vegetales le devuelven ese brillo sano que tenía.</p></div></li>
+        <li><span class="vprb-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12c3-4 6-4 9-1 3-3 6-3 9 1-3 4-6 6-9 6s-6-2-9-6z"/></svg></span><div><b>Tirantez al lavarte la cara</b><p>Karité y caléndula sellan la hidratación: la piel deja de tirar.</p></div></li>
+      </ul>
+      <a class="vprb-cta" href="#lbn-bundle">Quiero mi piel con jugo <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  {%- comment -%} 5 · Resultados que podés esperar + antes/después {%- endcomment -%}
+  <section class="vprb-sec vprb-ba" id="vprb-resultados">
+    <div class="vprb-w">
+      <p class="vprb-eye">Resultados que podés esperar</p>
+      <h2 class="vprb-h2">Usándolo <em>todas las noches</em></h2>
+      <ol class="vprb-res__l">
+        <li><div class="vprb-res__n">1<small>noche</small></div><p><b>Piel suave y sin tirantez.</b> Te levantás con la cara cómoda, como si hubiera tomado agua.</p></li>
+        <li><div class="vprb-res__n">2<small>semanas</small></div><p><b>Más luz, más pareja.</b> Se acabó la cara apagada al mirarte al espejo.</p></li>
+        <li><div class="vprb-res__n">8<small>semanas</small></div><p><b>Líneas más suaves.</b> Las arrugas por sequedad se ven menos marcadas y la piel, más jugosa.</p></li>
+      </ol>
+      <div class="vprb-tabs" role="tablist">
+        <button type="button" class="is-on" data-vprb-tab="rostro" role="tab" aria-selected="true">Rostro</button>
+        <button type="button" data-vprb-tab="manos" role="tab" aria-selected="false">Manos</button>
+      </div>
+      <div class="vprb-ba__img" data-vprb-pane="rostro"><img src="{{ f }}vp-rb-lp-ba-madura.png?width=1000" alt="Noche 1: piel madura seca y con líneas marcadas. Día 30: piel nutrida y luminosa" loading="lazy" width="1000" height="1000"></div>
+      <div class="vprb-ba__img" data-vprb-pane="manos" hidden><img src="{{ f }}vp-rb-lp-ba-cuticulas.png?width=1000" alt="Antes: cutículas secas y nudillos ásperos. Después: cutículas suaves" loading="lazy" width="1000" height="1000"></div>
+      <p class="vprb-note">Imagen ilustrativa. Resultados con uso diario y constante; pueden variar según cada piel.</p>
+      <a class="vprb-cta" href="#lbn-bundle">Quiero ese resultado <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  {%- comment -%} 6 · El cuidado hecho simple: un solo paso {%- endcomment -%}
+  <section class="vprb-emo">
+    <div class="vprb-emo__img"><img src="{{ f }}vp-rb-lp-madura.png?width=1200" alt="Mujer de 58 años con el Patagonia Rescue Balm junto a una ventana con vista a un lago patagónico" loading="lazy" width="1200" height="1490"></div>
+    <div class="vprb-w vprb-emo__w">
+      <p class="vprb-eye vprb-eye--inv">El cuidado, simple</p>
+      <h2 class="vprb-h2 vprb-h2--inv">Una capa de noche. <em>Despertá con otra cara.</em></h2>
+      <ul class="vprb-emo__no">
+        <li><b>No más</b> rutinas de diez pasos que nunca sostenés.</li>
+        <li><b>No más</b> cremas caras que se evaporan en la almohada.</li>
+        <li><b>No más</b> mirarte al espejo y ver la piel tirante y apagada.</li>
+      </ul>
+      <p class="vprb-emo__p">Después de lavarte la cara, calentá una lenteja de bálsamo entre los dedos y presionala sobre rostro, cuello y escote. Si usás sérum, va encima: lo sella y lo hace rendir.</p>
+      <a class="vprb-cta vprb-cta--inv" href="#lbn-bundle">Lo quiero para mi noche <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  {%- comment -%} 7 · Qué nos hace distintos: la Patagonia hace el producto (donde Frøya cuenta Noruega y Tala a su fundadora) {%- endcomment -%}
+  <section class="vprb-sec vprb-pat">
+    <div class="vprb-w">
+      <div class="vprb-pat__img"><img src="{{ f }}vp-rb-lp-calendula.png?width=1000" alt="Patagonia Rescue Balm entre caléndulas, con el cerro Fitz Roy de fondo" loading="lazy" width="1000" height="1250"></div>
+      <p class="vprb-eye vprb-eye--inv">Qué nos hace distintos</p>
+      <h2 class="vprb-h2 vprb-h2--inv">La Patagonia <em>hace el producto.</em></h2>
+      <p class="vprb-pat__p">En el sur, las plantas crecen con viento de más de 100 km/h, heladas y un sol que quema. Las que sobreviven lo hacen guardando aceites. Esa resistencia es la que buscamos para tu piel, y por eso la caléndula de este bálsamo viene de la Patagonia.</p>
+      <ol class="vprb-pat__l">
+        <li><span>01</span><div><b>Clima extremo, plantas fuertes</b><p>Lo que aguanta el invierno patagónico, aguanta la sequedad de tu piel.</p></div></li>
+        <li><span>02</span><div><b>Patagonia PureTrack™</b><p>Cada botánico, rastreado desde su origen. Sabés de dónde viene lo que te ponés en la cara.</p></div></li>
+        <li><span>03</span><div><b>Hecho en Argentina</b><p>Lo fabricamos en nuestro laboratorio, acá. No es importado ni de etiqueta: fórmula, producción y control son nuestros.</p></div></li>
+      </ol>
+      <a class="vprb-cta vprb-cta--inv" href="#lbn-bundle">Quiero lo mejor de la Patagonia <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  {%- comment -%} 8 · Cero agua: fuerza completa {%- endcomment -%}
+  <section class="vprb-sec vprb-sa">
+    <div class="vprb-w vprb-sa__w">
+      <div class="vprb-sa__img"><img src="{{ f }}vp-rb-lp-textura.png?width=900" alt="Textura del Patagonia Rescue Balm: se funde al contacto con la piel" loading="lazy" width="900" height="1125"></div>
+      <div>
+        <p class="vprb-eye">Cero agua, fuerza completa</p>
+        <h2 class="vprb-h2">Tu piel no necesita más agua. <em>Necesita aceites.</em></h2>
+        <p class="vprb-lead">Una crema tiene entre 60 y 80% de agua. Este bálsamo no tiene nada: es 100% aceites, mantecas y ceras vegetales, justo lo que la piel madura dejó de fabricar.</p>
+        <div class="vprb-bars" role="img" aria-label="Crema común: 70% agua. Patagonia Rescue Balm: 0% agua, 100% activos.">
+          <div class="vprb-bar"><span>Crema común</span><div class="vprb-bar__t"><i style="width:70%">agua</i><b style="width:30%">activos</b></div></div>
+          <div class="vprb-bar vprb-bar--us"><span>Rescue Balm</span><div class="vprb-bar__t"><b style="width:100%">100% activos · 0% agua</b></div></div>
+        </div>
+        <ul class="vprb-sa__l">
+          <li><b>Repone lo que falta.</b> Jojoba, oliva y karité se parecen a los lípidos que tu piel producía sola.</li>
+          <li><b>Sella toda la noche.</b> Las ceras de carnauba y candelilla forman un velo que no deja escapar la hidratación.</li>
+          <li><b>Rinde meses.</b> Una lenteja alcanza para cara, cuello y escote.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 9 · Cómo funcionan los ingredientes (formato Frøya: beneficio → ingrediente) {%- endcomment -%}
+  <section class="vprb-sec vprb-ing">
+    <div class="vprb-w">
+      <p class="vprb-eye">La fórmula</p>
+      <h2 class="vprb-h2">¿Cómo funcionan <em>los ingredientes?</em></h2>
+      <ul class="vprb-ib">
+        <li><small>Calma y regenera</small><b>Caléndula <span class="o">Patagonia</span></b><p>La flor que crece en el sur. Calma la piel sensible y acompaña su regeneración.</p></li>
+        <li><small>Nutre en profundidad</small><b>Manteca de karité</b><p>Es el primer ingrediente. Devuelve suavidad y elasticidad a la piel seca.</p></li>
+        <li><small>Repone los aceites</small><b>Jojoba, oliva, girasol y coco</b><p>Aceites vegetales parecidos al sebo que la piel madura deja de producir.</p></li>
+        <li><small>Sella la hidratación</small><b>Carnauba y candelilla</b><p>Ceras vegetales: por eso es vegano, sin cera de abeja ni lanolina.</p></li>
+        <li><small>Protege</small><b>Vitamina E y aloe vera</b><p>Antioxidante que cuida la piel de las agresiones del día y la refresca.</p></li>
+        <li><small>Invita a dormir</small><b>Lavanda y eucalipto</b><p>Aceites esenciales en dosis suave: un aroma limpio y natural.</p></li>
+      </ul>
+      <details class="vprb-inci"><summary>Fórmula completa · INCI</summary><p>Butyrospermum Parkii Butter, Olea Europaea Fruit Oil, Simmondsia Chinensis Seed Oil, Helianthus Annuus Seed Oil, Cocos Nucifera Oil, Copernicia Cerifera Wax, Euphorbia Cerifera Wax, Calendula Officinalis Flower Oil, Tocopheryl Acetate, Aloe Barbadensis Leaf Extract, Sorbitan Olivate, Eucalyptus Globulus Leaf Oil, Lavandula Angustifolia (Lavender) Oil.</p></details>
+    </div>
+  </section>
+
+  {%- comment -%} 10 · Comparativa {%- endcomment -%}
+  <section class="vprb-sec vprb-cmp">
+    <div class="vprb-w">
+      <p class="vprb-eye">La diferencia</p>
+      <h2 class="vprb-h2">Rescue Balm vs. <em>los anti-age de siempre</em></h2>
+      <p class="vprb-lead">La crema de farmacia, la importada, el bálsamo con cera de abeja. Ponelos al lado.</p>
+      <div class="vprb-cmp__t" role="table">
+        <div class="vprb-cmp__row vprb-cmp__row--hd" role="row"><span role="columnheader"></span><span class="vprb-cmp__us" role="columnheader">Rescue Balm</span><span class="vprb-cmp__th" role="columnheader">Los de siempre</span></div>
+        {%- capture rows -%}Agua|Cero|Las cremas, 60 a 80%|Base|Ceras y mantecas vegetales|Cera de abeja, lanolina o siliconas|Vegano|sí|Casi nunca|Origen|Caléndula de la Patagonia, rastreada|«Natural», sin decir de dónde|Hecho en|Argentina, laboratorio propio|Importado o de etiqueta|Pasos|Uno solo, de noche|Sérum + crema + contorno|Promesas|Las que cumple la fórmula|Milagros garantizados|Parabenos|Cero|Frecuentes|Rinde|Meses: una lenteja por noche|Se termina rápido{%- endcapture -%}
+        {%- assign r = rows | split: '|' -%}
+        {%- for i in (0..8) -%}
+          {%- assign k = i | times: 3 -%}{%- assign a = k | plus: 1 -%}{%- assign b = k | plus: 2 -%}
+          <div class="vprb-cmp__row" role="row"><span class="vprb-cmp__f" role="rowheader">{{ r[k] }}</span><span class="vprb-cmp__us" role="cell">{% if r[a] == 'sí' %}<i class="ok" aria-label="Sí">✓</i>{% else %}<i class="ok" aria-hidden="true">✓</i>{{ r[a] }}{% endif %}</span><span class="vprb-cmp__th" role="cell"><i class="no" aria-hidden="true">✕</i>{{ r[b] }}</span></div>
+        {%- endfor -%}
+      </div>
+      <a class="vprb-cta" href="#lbn-bundle">Me quedo con el Rescue Balm <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  {%- comment -%} 11 · 2×1 que se comparte (madre e hija) {%- endcomment -%}
+  <section class="vprb-sec vprb-rit">
+    <div class="vprb-w">
+      <p class="vprb-eye">El 2×1 que se comparte</p>
+      <h2 class="vprb-h2">Uno para vos. <em>Otro te lo va a robar tu hija.</em></h2>
+      <div class="vprb-dos__img"><img src="{{ f }}vp-rb-lp-mama-hija.png?width=1000" alt="Madre e hija compartiendo el Patagonia Rescue Balm junto a un lago patagónico" loading="lazy" width="1000" height="1250"></div>
+      <p class="vprb-lead">Vos lo usás de noche en la cara. Ella, para los labios en el viento y las cutículas en la oficina. Un mismo frasco, toda la familia.</p>
+      <ol class="vprb-rit__l vprb-rit__l--2">
+        <li><img src="{{ f }}vp-rb-lp-sur.png?width=700" alt="Mujer con polar aplicándose el bálsamo en los labios junto a un lago patagónico" loading="lazy" width="700" height="875"><span>1</span><p><b>Labios.</b> Antes y después del viento.</p></li>
+        <li><img src="{{ f }}vp-rb-lp-cafe.png?width=700" alt="Chica en un café aplicándose el bálsamo en las cutículas" loading="lazy" width="700" height="875"><span>2</span><p><b>Manos y cutículas.</b> Entre café y café.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  {%- comment -%} 12 · Garantía, en grande como Frøya {%- endcomment -%}
+  <section class="vprb-sec vprb-gt">
+    <div class="vprb-w">
+      <div class="vprb-gt__box">
+        <p class="vprb-eye">Comprá tranquila</p>
+        <p class="vprb-gt__big">Si no es lo que esperabas, lo cambiamos.</p>
+        <p>Tenés 7 días desde que lo recibís para cambiarlo, sin uso y en su empaque. Somos el laboratorio que lo fabrica: si algo no anda, nos escribís y lo resolvemos nosotros.</p>
+        <ul class="vprb-gt__l">
+          <li><b>Envío a todo el país</b>2 a 5 días hábiles{% if fst > 0 %} · gratis desde {{ fst | money_without_trailing_zeros }}{% endif %}</li>
+          <li><b>Pago seguro</b>{% render 'lbn-cuotas', estilo: 'resumen' %}</li>
+          <li><b>10% OFF</b>pagando por transferencia</li>
+          <li><b>Sale desde Argentina</b>Sin aduana ni demoras</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 13 · Oferta final: 2×1 = 2 por el tachado de uno {%- endcomment -%}
+  <section class="vprb-off">
+    <div class="vprb-off__img"><img src="{{ f }}vp-rb-lp-oferta.png?width=1200" alt="Dos Patagonia Rescue Balm sobre una roca frente a un lago y montañas de la Patagonia" loading="lazy" width="1200" height="1200"></div>
+    <div class="vprb-w vprb-off__w">
+      <p class="vprb-eye vprb-eye--inv">2×1 · Elegí tu pack</p>
+      <h2 class="vprb-h2 vprb-h2--inv">Llevás 2, <em>pagás 1</em>.</h2>
+      <p class="vprb-off__p">Dos bálsamos al precio de lista de uno: uno para vos y otro para regalar, o meses de noches seguidas.</p>
+      <ul class="vprb-off__l">
+        <li><span>1 bálsamo</span><b>{{ p1 | money_without_trailing_zeros }}</b>{% if w1 > p1 %}<s>{{ w1 | money_without_trailing_zeros }}</s>{% endif %}</li>
+        <li class="is-best"><span>2×1 · 2 bálsamos <em>· el más elegido</em></span><b>{{ p2 | money_without_trailing_zeros }}</b><s>{{ w2 | money_without_trailing_zeros }}</s></li>
+        <li><span>3 bálsamos <em>· 25% OFF, para regalar</em></span><b>{{ p3 | money_without_trailing_zeros }}</b><s>{{ w3 | money_without_trailing_zeros }}</s></li>
+      </ul>
+      <a class="vprb-cta vprb-cta--inv" href="#lbn-bundle">Quiero mi 2×1 <span aria-hidden="true">→</span></a>
+      <p class="vprb-mini vprb-mini--inv">Envío a todo el país · Cambios dentro de 7 días · Pago seguro</p>
+    </div>
+  </section>
+
+  {%- comment -%} 14 · Preguntas frecuentes (largas, como Frøya) {%- endcomment -%}
+  <section class="vprb-sec vprb-faq">
+    <div class="vprb-w">
+      <h2 class="vprb-h2">Preguntas frecuentes</h2>
+      <p class="vprb-lead">Todo lo que querés saber antes de probarlo.</p>
+      {%- capture faqs -%}¿Qué es el Patagonia Rescue Balm?~Un bálsamo anti-age sin agua, hecho con caléndula de la Patagonia, karité y aceites y ceras vegetales. Como no tiene agua ni relleno, una capa fina hace el trabajo de un pote entero de crema. Es tu rutina de noche en un solo paso.^¿Sirve para las arrugas?~Trabaja sobre lo que más las marca en la piel madura: la sequedad. Con la piel nutrida y sellada, las líneas finas se ven más suaves y la piel, más jugosa y luminosa. No tiene retinol ni ácidos y no hace milagros: es un cosmético, no un tratamiento médico.^¿En qué se diferencia de una crema?~En lo que tiene adentro. La mayoría de las cremas son entre 60 y 80% agua, así que los aceites que ayudan a tu piel van diluidos. El bálsamo saca el agua: cada gramo son aceites, mantecas y ceras que trabajan sobre la piel.^¿Lo puedo combinar con retinol o ácido hialurónico?~Sí. No tiene activos irritantes, así que va como último paso, encima de tu sérum: lo sella y lo hace rendir. Si usás retinol, el bálsamo ayuda a calmar la sequedad que suele dar.^¿Mi piel va a «purgar» al empezar?~No. Esa etapa suele venir de los ácidos y los retinoides, no de un bálsamo de aceites. Igual, como con cualquier cosmético, probalo primero en la parte interna del brazo y esperá 24 horas.^¿Lo puedo usar todos los días?~Sí, todas las noches y sin descansos. Cuanto más constante seas, mejor. De día, una cantidad mínima en las zonas más secas.^¿Qué resultados puedo esperar?~La primera noche, piel suave y sin tirantez. A las dos semanas, más luz y un tono más parejo. Entre la semana 4 y la 8, las líneas por sequedad se ven más suaves. Cada piel es distinta.^¿Por qué la Patagonia?~Porque ahí las plantas crecen con viento, heladas y sol fuerte, y sobreviven guardando aceites. Esa resistencia es la que buscamos para tu piel. Con Patagonia PureTrack™ cada botánico se rastrea desde su origen.^¿Deja la cara grasosa?~Si usás la cantidad justa, no: se funde y se absorbe en un par de minutos. Para todo el rostro alcanza con una lenteja.^¿Sirve si tengo piel grasa o con granitos?~Está pensado para piel seca o madura. En la zona T o en piel con tendencia acneica, mejor no: tiene aceite de coco.^¿Cómo huele?~Suave, a lavanda y eucalipto. Es un aroma natural, no un perfume.^¿Lo pueden usar los chicos o en el embarazo?~En bebés y chicos menores de 3 años no lo recomendamos porque tiene aceites esenciales. En el embarazo, como con cualquier cosmético, consultalo con tu médico.^¿Se derrite con el calor?~Sí, es una fórmula natural: con mucho calor se ablanda y vuelve a solidificar con el fresco. No pierde propiedades.^¿Cuánto dura un frasco?~Tiene 30 ml y se usa muy poco por vez: usándolo todas las noches, unos dos meses.^¿Quién lo fabrica?~Nosotros. VegaPlay es una marca de nuestro laboratorio en Argentina.^¿Cuánto tarda el envío?~Sale desde Argentina y llega en 2 a 5 días hábiles, con seguimiento. Sin aduana.^¿Y si no me gusta?~Tenés 7 días desde que lo recibís para cambiarlo, sin uso y en su empaque original.^¿Cómo puedo pagar?~Tarjeta de crédito o débito, Mercado Pago o transferencia (10% OFF). {% render 'lbn-cuotas', estilo: 'resumen' %}.{%- endcapture -%}
+      {%- assign qs = faqs | split: '^' -%}
+      <div class="vprb-faq__l">
+        {%- for q in qs -%}{%- assign qa = q | split: '~' -%}
+        <details class="vprb-faq__i"><summary>{{ qa[0] | strip }}</summary><p>{{ qa[1] | strip }}</p></details>
+        {%- endfor -%}
+      </div>
+      <a class="vprb-cta" href="#lbn-bundle">Quiero mi Rescue Balm <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  {%- comment -%} 15 · Origen (cierre: donde Frøya pone su saga) {%- endcomment -%}
+  <section class="vprb-org">
+    <img src="{{ f }}vp-rb-lp-origen.png?width=1400" alt="Patagonia Rescue Balm sobre una roca junto a un lago, con el cerro Fitz Roy de fondo" loading="lazy" width="1400" height="1750">
+    <div class="vprb-org__t">
+      <p class="vprb-org__k">{{ flag }}Hecho en Argentina</p>
+      <h2>Lo que resiste en la Patagonia, resiste en tu piel.</h2>
+      <p>Viento, frío y sequedad: el sur no perdona. Por eso elegimos sus plantas. Caléndula patagónica, mantecas y ceras vegetales, sin una gota de agua, hechas acá por un laboratorio argentino.</p>
+    </div>
+  </section>
+</div>
+<style>
+.vprb-off__p{font-size:16px;line-height:1.55;color:#c9cfc6;margin:-8px 0 22px;max-width:44ch}
+.vprb-dos__img{border-radius:6px;overflow:hidden;aspect-ratio:4/5;max-width:560px;margin:0 0 22px}
+.vprb-dos__img img{width:100%;height:100%;object-fit:cover}
+.vprb-rit__l--2{grid-template-columns:1fr 1fr;gap:14px}
+.vprb-rit__l--2 p{font-size:14.5px}
+@media(min-width:750px){.vprb-rit .vprb-w{display:grid;grid-template-columns:1fr 1fr;column-gap:56px;align-items:start}.vprb-rit .vprb-eye,.vprb-rit .vprb-h2{grid-column:1/-1}.vprb-dos__img{grid-row:span 2;margin:0}}
+</style>
+<script>
+(function(){
+  var root=document.querySelector('.vprb'); if(!root) return;
+  root.querySelectorAll('[data-vprb-tab]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var k=b.getAttribute('data-vprb-tab');
+      root.querySelectorAll('[data-vprb-tab]').forEach(function(x){var on=x===b;x.classList.toggle('is-on',on);x.setAttribute('aria-selected',on?'true':'false');});
+      root.querySelectorAll('[data-vprb-pane]').forEach(function(p){p.hidden=p.getAttribute('data-vprb-pane')!==k;});
+    });
+  });
+})();
+</script>
