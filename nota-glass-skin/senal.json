@@ -1,0 +1,62 @@
+{
+  "titulo": "Glass skin: dermatólogos advierten sobre la tendencia coreana",
+  "resumen": "Un estudio presentado el 29/09/2026 en el congreso de la Academia Europea de Dermatología y Venereología (EADV) analizó los 38 videos más vistos sobre rutinas coreanas de glass skin: casi el 95% tenía afirmaciones engañosas, solo 1 mencionaba el riesgo de irritación, 2 hablaban de protección solar, ninguno de dermatitis de contacto ni de consultar a un dermatólogo; 45% recomendaba combinar varios activos sin advertencias y 32% prometía resultados inmediatos. Ninguno fue hecho por dermatólogos. La Dra. Jane Yoo (Mount Sinai) dice que una piel sin poros visibles es imposible porque los poros son genéticos y recomienda cuatro pasos: limpiador suave, un activo, hidratante y protector solar.",
+  "aplicabilidadAR": "La glass skin y las rutinas coreanas de muchos pasos son tendencia también en Argentina; la lectura útil para nuestra comunidad es que más capas no es mejor piel.",
+  "fuentes": [
+    {
+      "url": "https://cnnespanol.cnn.com/2026/10/08/salud/glass-skin-tendencia-corea-trax",
+      "medio": "CNN en Español",
+      "fecha": "2026-10-08"
+    },
+    {
+      "url": "https://abc17news.com/cnn-spanish/2026/10/08/expertos-advierten-sobre-los-riesgos-del-glass-skin-una-popular-tendencia-de-belleza-coreana/",
+      "medio": "ABC17 News (CNN en Español)",
+      "fecha": "2026-10-08"
+    }
+  ],
+  "modoVisual": "nota-foto",
+  "remate": "idea",
+  "tipoDePieza": "lectura-cultural",
+  "cards": [
+    {
+      "rol": "portada",
+      "rotulo": "LA NOTA",
+      "titular": "La glass skin tiene un problema que no sale en los videos.",
+      "bajada": "Dermatólogos revisaron los 38 videos más vistos de la tendencia.",
+      "assetId": "receta:nota-tipografica-lbn",
+      "creditoImpreso": "Fuente: CNN en Español · 08/10/2026"
+    },
+    {
+      "rol": "evidencia",
+      "rotulo": "EL ESTUDIO",
+      "titular": "Casi el 95% tenía afirmaciones engañosas.",
+      "bajada": "Lo presentaron el 29 de septiembre en el congreso de la Academia Europea de Dermatología (EADV).",
+      "assetId": "receta:nota-tipografica-lbn",
+      "creditoImpreso": "Fuente: CNN en Español · 08/10/2026"
+    },
+    {
+      "rol": "el código",
+      "rotulo": "LO QUE FALTA",
+      "titular": "Solo 1 de 38 habló de irritación.",
+      "bajada": "Dos mencionaron el protector solar. Ninguno lo hizo un dermatólogo.",
+      "assetId": "receta:nota-tipografica-lbn",
+      "creditoImpreso": "Fuente: CNN en Español · 08/10/2026"
+    },
+    {
+      "rol": "la lectura",
+      "rotulo": "LA LECTURA",
+      "titular": "Más capas no es mejor piel.",
+      "bajada": "Para la Dra. Jane Yoo, una piel sin poros visibles es imposible: los poros son genéticos.",
+      "assetId": "receta:nota-tipografica-lbn",
+      "creditoImpreso": "Fuente: CNN en Español · 08/10/2026"
+    },
+    {
+      "rol": "cierre",
+      "rotulo": "NUESTRA POSTURA",
+      "titular": "El brillo sí. La rutina infinita, no.",
+      "bajada": "Según la Dra. Yoo, cuatro pasos alcanzan: limpiador suave, un activo, hidratante y protector solar.",
+      "assetId": "receta:nota-tipografica-lbn",
+      "creditoImpreso": "Fuente: CNN en Español · 08/10/2026"
+    }
+  ]
+}
